@@ -1,0 +1,275 @@
+@media (max-width: 768px) {
+  /* 1.头部变化 */
+  .header {
+    display: none;
+  }
+  .header-m {
+    display: block;
+    width: 100%;
+    height: 80px;
+  }
+  .header-m.active {
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+  }
+  .header-m .header-c {
+    transition: all 0.5s ease-in;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: auto;
+    padding-left: 0;
+    display: flex;
+  }
+  .header-m .header-c .logo {
+    width: 89px;
+    margin-left: 15px;
+  }
+  .header-m .header-c .logo .logo1 {
+    width: 89px;
+    display: block;
+  }
+  .header-m .header-c .logo .logo2 {
+    width: 24px;
+    padding: 4px 0 0 32px;
+    box-sizing: border-box;
+    display: block;
+  }
+  /* 工具栏 */
+  .header-m .header-c .btn {
+    display: block;
+    font-family: "iconfont";
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 40px;
+  }
+
+  .header-m .header-c .icon-caidan {
+    transition: all 0.4s linear;
+  }
+  .header-m .header-c .icon-close {
+    transform: rotate(-90deg);
+    transition: all 0.4s linear;
+  }
+  /* 导航栏 */
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  .content {
+    width: 100%;
+    height: 100%;
+  }
+  .header-m .header-c .nav .nav-item {
+    margin-left: 0px;
+    /* padding: 25px 0; */
+  }
+  .header-m .header-c .nav a:after {
+    width: 0;
+    height: 0px;
+    /* background-color: #b9ab77; */
+  }
+  .header-c .nav a {
+    color: #1d1d1d;
+    line-height: 0px;
+  }
+  .header-m .header-c .nav .nav-item {
+    padding: 25px;
+    box-sizing: border-box;
+  }
+  .header-m .header-c .nav .nav-item:first-child {
+    padding-top: 65px;
+    box-sizing: border-box;
+  }
+  .header-c .nav .active a {
+    transform: scale(1);
+    color: #b9ab77;
+  }
+  .header-c .nav .nav-item:hover a {
+    transform: scale(1);
+    color: #1d1d1d;
+  }
+  .header-m .header-c .nav {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 40px;
+    width: 100%;
+    height: calc(100% - 40px);
+    z-index: 20;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  .header-m .header-c .nav.active {
+    display: block;
+  }
+  .containner.active {
+    filter: blur(9px);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+  /* 头部导航栏 */
+  /*  */
+  /*  2.内容部分 */
+  .main {
+    margin-top: 90px;
+  }
+  .content-c {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .main > .top {
+    padding: 0 7px;
+    box-sizing: border-box;
+    height: 237px;
+  }
+  .main > .top img {
+    width: 216px;
+    height: 100%;
+  }
+  .main .top .text {
+    width: calc(100% - 216px);
+    height: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .main .top .text .top .line {
+    height: 0px;
+    width: 0px;
+  }
+  .main .top .text .top h3 {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .main .top .text .top p {
+    font-size: 12px;
+    text-align: left;
+    line-height: 18px;
+    margin-top: 12px;
+  }
+  .main .top .text .top .eng {
+    font-size: 12px;
+    padding: 0px;
+    text-align: left;
+    margin-top: 0px;
+  }
+  .main .top .text .top .color {
+    margin-top: 20px;
+  }
+  .main .top .text .center p {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .main .center p {
+    width: 100%;
+  }
+  .main .top .text .center p {
+    margin-top: 0px;
+    width: 132px;
+  }
+  .main .top .text .bot a {
+    color: #cecece;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #fefefe;
+    margin: 30px auto;
+    text-align: center;
+    line-height: 25px;
+  }
+  .main .top .text .bot a:hover {
+    background-color: #b9ab77;
+  }
+  .main>.center {
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    padding: 0 7px;
+    box-sizing: border-box;
+  }
+  .main .center img {
+    margin: 25px 0;
+    width: 216px;
+    height: 100%;
+  }
+  .main .center p {
+    width: 216px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .main .center .size {
+    font-size: 14px;
+    margin: 20px 0 6px;
+    line-height: 20px;
+  }
+  .main .center span {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  /* 轮播 */
+  
+  .bot .content-c {
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  .wedding-nav span {
+    margin: 30px 30px 30px 0;
+  }
+  .swiper-container {
+    display: none;
+  }
+  .main .content-c .swiper-weddingDress{
+    display: block;
+    overflow: hidden;
+  }
+
+  .more {
+    width: 100px;
+    height: 30px;
+    margin: 30px auto;   
+  }
+  .more a {
+    height: 100%;
+    line-height: 30px;
+    display: block;
+    font-size: 12px;
+    text-align: center;
+    color: #bdbcbc;
+    border: 1px solid currentColor;
+}
+  .main > .bot {
+    padding-bottom: 0px;
+  }
+  /* 4.底部 */
+.footer{
+  height: 80px;
+}
+.footer-c {
+  width:100%;
+  margin: 0 auto;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.footer-c .left {
+  height: 100%;
+}
+.footer-c .left p {
+  line-height: 24px;
+  margin: 0;
+}
+.footer-c .right p, .footer-c {
+  line-height: 24px;
+}
+.footer-c .right p, .footer-c .right a {
+  margin-right: 0px;
+  margin-left: 10px;
+  line-height: 24px;
+}
+}

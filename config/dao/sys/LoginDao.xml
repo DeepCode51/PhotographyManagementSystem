@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.sys.dao.LoginDao">
+	<!-- 映射 -->
+	<resultMap type="login" id="AllLogin">
+		<id column="loginId" property="loginId" />
+		<result column="userId" property="userId"/>
+		<result column="loginTime" property="loginTime"/>
+		<result column="loginIp" property="loginIp"/>
+		<!-- 一对一 -->
+		<association property="user" javaType="User">
+		<id property="userId" column="userId"/>
+		<result property="loginName" column="loginName"/>
+		<result property="realName" column="realName"/>
+		<result property="password" column="password"/>
+		<result property="sex" column="sex"/>
+		<result property="address" column="address"/>
+		<result property="userImage" column="userImage"/>
+		<result property="isApproval" column="isApproval"/>
+		<result property="member" column="member"/>
+		<result property="phone" column="phone"/>
+		<result property="job" column="job"/>
+	</association>
+	</resultMap>
+	<!-- 查询 登录日志信息 -->
+	<select id="getAllLogin" resultMap="AllLogin">
+		SELECT t1.*,t2.realName FROM login t1 ,user t2
+		<where>
+			t1.userId = t2.userId
+			<if test="realName !=null and realName !=''">
+				and realName like concat("%",#{realName},"%")
+			</if>
+			<if test="startLoginTime !=null and startLoginTime !=''">
+				and loginTime >= #{startLoginTime}
+			</if>
+			<if test="endLoginTime != null and endLoginTime !=''">
+				and loginTime <![CDATA[<=]]> #{endLoginTime}
+			</if>
+			<if test="loginIp != null and loginIp !=''">
+				and loginIp=#{loginIp}
+			</if>
+			order by t1.loginId DESC
+		</where>
+	</select>
+	<!-- 添加 登录日志信息 -->
+	<insert id="addLogin" >
+		INSERT INTO login(userId,loginTime,loginIp) VALUE(#{userId},#{loginTime},#{loginIp})
+	</insert>
+	<!-- 删除 登录日志信息 -->
+	<delete id="deleteLogin">
+		DELETE  FROM login WHERE loginId=#{loginId}
+	</delete>
+	<!-- 根据用户id查询登录日志信息 -->
+	<select id="getLoginUserId" resultMap="AllLogin">
+		select * from login where userId=#{userId}
+	</select>
+	
+	<!-- 批量删除登录日志信息 -->
+	<delete id="deleteLoginByArray" parameterType="Integer[]">
+		delete from login where loginId in
+		<foreach collection="array" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+</mapper>

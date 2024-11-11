@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.bus.dao.OrderDao">
+	<!-- 映射 -->
+	<resultMap type="Order" id="resultMap">
+		<id property="orderId" column="orderId"/>
+		<result property="subId" column="subId"/>	
+		<result property="customerId" column="customerId"/>	
+		<result property="orderName" column="orderName"/>	
+		<result property="orderTime" column="orderTime"/>
+	<!-- 一对一映射 -->
+	<association property="customer" javaType="Customer">
+		<id property="customerId" column="customerId"/>
+		<result property="loginName" column="loginName"/>
+		<result property="realName" column="realName"/>
+		<result property="PASSWORD" column="PASSWORD"/>
+		<result property="sex" column="sex"/>
+		<result property="address" column="address"/>
+		<result property="phone" column="phone"/>
+		<result property="balance" column="balance"/>
+	</association>
+		<!-- 一对一  -->
+		<association property="subscribe" javaType="Subscribe">
+			<id property="subId" column="subId"/>
+			<result property="customerId" column="customerId"/>	
+			<result property="sampleId" column="sampleId"/>	
+			<result property="price" column="price"/>	
+			<result property="subState" column="subState"/>
+			<result property="subTime" column="subTime"/>
+		</association>
+	</resultMap>
+	
+	<!-- 查询所有订单 -->
+	<select id="getAllOrder" resultMap="resultMap">
+		SELECT t1.*,t2.realName,t3.* from orders t1 inner join 
+	customer t2 inner join subscribe t3  on 
+	(t1.customerId=t2.customerId) AND (t1.subId=t3.subId) 
+		<where>
+			<if test="subId!=null">
+				and subId = #{subId}
+			</if>
+			<if test="orderName!=null and orderName!=''">
+				and orderName like concat("%",#{orderName},"%")
+			</if>
+			<if test="realName!=null and realName!=''">
+				and realName like concat("%",#{realName},"%")
+			</if>
+			<if test="startTime!=null and startTime !=''">
+				and orderTime  >= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime !=''">
+				and orderTime &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 根据客户Id查询订单信息 -->
+	<select id="getOrderByCustomerId" resultMap="resultMap">
+	select t1.*,t2.phone,t2.realName,t3.* from orders t1 inner join 
+	customer t2 inner join subscribe t3  on 
+	(t1.customerId=t2.customerId) AND (t1.subId=t3.subId) 
+		where t1.customerId = #{customerId} 
+	</select>
+	
+	<!-- 添加订单 -->
+	<insert id="insertOrder">
+		insert into orders
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				orderId,
+			</if>
+			<if test="subId != null">
+				subId,
+			</if>
+			<if test="orderName != null">
+				orderName,
+			</if>
+			<if test="customerId != null">
+				customerId,
+			</if>
+			<if test="orderTime != null">
+				orderTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				#{orderId},
+			</if>
+			<if test="subId != null">
+				#{subId},
+			</if>
+			<if test="orderName != null">
+				#{orderName},
+			</if>
+			<if test="customerId != null">
+				#{customerId},
+			</if>
+			<if test="orderTime != null">
+				#{orderTime},
+			</if>			
+		</trim>
+	</insert>
+	
+	<!-- 修改订单 -->
+	<update id="updataOrderByOrderId">
+		update orders
+		<set>
+			<if test="subId != null">
+				subId = #{subId},
+			</if>
+			<if test="orderName != null">
+				orderName = #{orderName},
+			</if>
+			<if test="orderTime != null">
+				orderTime = #{orderTime},
+			</if>			
+		</set>
+		where orderId = #{orderId}
+	</update>
+	
+	<!-- 根据id删除订单 -->
+	<delete id="deleteOrderByOrderId">
+		delete from orders where orderId = #{orderId}
+	</delete>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteOrderByArray">
+		delete from orders where orderId in 
+		<foreach collection="list" item="orderId" open="(" separator="," close=")">
+			#{orderId}
+		</foreach>
+	</delete>
+	<!-- 根据预约Id查询订单 -->
+	<select id="getOrderBySubId" resultMap="resultMap">
+	select * from orders where subId = #{subId}
+	</select>
+	
+	<!-- 根据预约Id数组查询订单 -->
+	<select id="getOrderBySubIdByArray" parameterType="Integer[]" resultMap="resultMap">
+	select * from orders where subId in
+	 <foreach collection="array" item="subId" open="(" separator="," close=")">
+			#{subId}
+		</foreach>
+	</select>
+	
+	<!-- 根据订单编号查询订单 -->
+	<select id="getOrderByOrderId" resultMap="resultMap">
+	select * from orders where orderId = #{orderId}
+	</select>
+</mapper>

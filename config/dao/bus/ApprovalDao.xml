@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.bus.dao.ApprovalDao">
+	<!-- 映射 -->
+	<resultMap type="Approval" id="allApproval">
+		<id property="approvalId" column="approvalId"/>
+		<result property="approvalCount" column="approvalCount"/>	
+		<result property="approvedPerson" column="approvedPerson"/>	
+		<result property="approver" column="approver"/>	
+		<result property="sampleId" column="sampleId"/>	
+		<result property="approvalState" column="approvalState"/>	
+		<result property="why" column="why"/>	
+		<result property="approvalTime" column="approvalTime"/>	
+	<!-- 一对一 被审批人 approvedPerson-->
+	<association property="user1" javaType="User">
+		<id property="userId" column="approvedPerson"/>
+		<result property="realName" column="userName1"/>
+	</association>
+	<!-- 一对一 审批人 approver-->
+	<association property="user2" javaType="User">
+		<id property="userId" column="approver"/>
+		<result property="realName" column="userName2"/>
+	</association>
+	<!-- 一对一 样片表 sample-->
+	<association property="sample" javaType="Sample">
+		<id property="sampleId" column="sampleId"/>
+		<result property="sampleName" column="sampleName"/>
+		<result property="sampleLogo" column="sampleLogo"/>
+	</association>
+	</resultMap>
+	<!-- 查询审批 -->
+	<select id="getAllApproval" resultMap="allApproval">
+		SELECT distinct t1.*,t2.realName AS userName1,t3.realName AS userName2,t4.sampleName,t4.sampleLogo FROM 
+		approval t1 left join  USER t3 ON t1.approver = t3.userId
+		inner JOIN user t2 ON t1.approvedPerson = t2.userId
+		inner join sample t4 on t1.sampleId= t4.sampleId 
+		<where>
+			<if test="userName1!=null and userName1 !=''">
+				and t2.realName like concat("%",#{userName1},"%")
+			</if>
+			<if test="userName2!=null and userName2 !=''">
+				and t3.realName like concat("%",#{userName2},"%")
+			</if>
+			<if test="sampleName!=null and sampleName !=''">
+				and sampleName like concat("%",#{sampleName},"%")
+			</if>
+			<if test="starttime!=null and starttime !=''">
+				and approvalTime  >= #{starttime}
+			</if>
+			<if test="endtime!=null and endtime !=''">
+				and approvalTime <![CDATA[<=]]> #{endtime}
+			</if>
+			<if test="approvalState!=null and approvalState !=''">
+				and approvalState = #{approvalState}
+			</if>
+		</where> 
+		order by approvalState
+	</select>
+	<!-- 添加审批 -->
+	<insert id="addApproval">
+		insert into approval
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="approvalId != null">
+				approvalId,
+			</if>
+			<if test="approvalCount != null">
+				approvalCount,
+			</if>
+			<if test="approvedPerson != null">
+				approvedPerson,
+			</if>
+			<if test="approver != null">
+				approver,
+			</if>
+			<if test="sampleId != null">
+				sampleId,
+			</if>
+			<if test="approvalState != null">
+				approvalState,
+			</if>
+			<if test="why != null">
+				why,
+			</if>
+			<if test="approvalTime != null">
+				approvalTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="approvalId != null">
+				#{approvalId},
+			</if>
+			<if test="approvalCount != null">
+				#{approvalCount},
+			</if>
+			<if test="approvedPerson != null">
+				#{approvedPerson},
+			</if>
+			<if test="approver != null">
+				#{approver},
+			</if>
+			<if test="sampleId != null">
+				#{sampleId},
+			</if>
+			<if test="approvalState != null">
+				#{approvalState},
+			</if>
+			<if test="why != null">
+				#{why},
+			</if>
+			<if test="approvalTime != null">
+				#{approvalTime},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 修改审批 -->
+	<update id="updateApprovalByApprovalId">
+		update approval
+	<set>
+		<if test="approvalCount != null">
+			approvalCount = #{approvalCount},
+		</if>
+		<if test="approvedPerson != null">
+			approvedPerson = #{approvedPerson},
+		</if>
+		<if test="approver != null">
+			approver = #{approver},
+		</if>
+		<if test="sampleId != null">
+			sampleId = #{sampleId},
+		</if>
+		<if test="approvalState != null">
+			approvalState = #{approvalState},
+		</if>
+		<if test="why != null">
+			why = #{why},
+		</if>
+		<if test="approvalTime != null">
+			approvalTime = #{approvalTime},
+		</if>
+	</set>
+	where approvalId = #{approvalId}
+	</update>
+	<!-- 根据审批编号删除审批 -->
+	<delete id="deleteApprovalByApprovalId">
+		delete from approval where approvalId  = #{approvalId}
+	</delete>
+	
+	<!-- 根据审批Id查询信息 -->
+	<select id="getApprovalByApprovalId" resultMap="allApproval">
+		SELECT distinct t1.*,t2.realName AS userName1,t3.realName AS userName2,t4.sampleName,t4.sampleLogo FROM 
+		approval t1 left join  USER t3 ON t1.approver = t3.userId
+		inner JOIN user t2 ON t1.approvedPerson = t2.userId
+		inner join sample t4 on t1.sampleId= t4.sampleId 
+		where approvalId = #{approvalId}
+	</select>
+	<!-- 批量删除审批 -->
+	<delete id="deleteApprovalByArray" >
+		delete from approval where approvalId in 
+		<foreach collection="list" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	<!-- 通过样片Id查询审批信息 -->
+	<select id="getApprovalBySampleId" resultType="Approval"> 
+		select * from approval where sampleId = #{sampleId}
+	</select>
+	
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.bas.dao.CustomerDao">
+
+	<!-- 查询所有客户 -->
+	<select id="getCustomerAll" resultType="customer">
+		select * from customer 
+		<where>
+			<if test="loginName!=null and loginName!=''">
+				and loginName like concat("%",#{loginName},"%")
+			</if>
+			<if test="realName!=null and realName!=''">
+				and realName like concat("%",#{realName},"%")
+			</if>
+			<if test="password!=null and password!=''">
+				and password = #{password}
+			</if>
+			<if test="sex!=null and sex!=''">
+				and sex = #{sex}
+			</if>
+			<if test="address!=null and address!=''">
+				and address like concat("%",#{address},"%")
+			</if>
+			<if test="phone!=null and phone!=''">
+				and phone like concat("%",#{phone},"%")
+			</if>
+			<if test="balance!=null and balance!=''">
+				and balance = #{balance}
+			</if>
+			<if test="startMoney!=null">
+				and balance  >= #{startMoney}
+			</if>
+			<if test="endMoney!=null">
+				and balance &lt;= #{endMoney}
+			</if>
+		</where>
+	</select>
+	<!-- 验证登录 -->
+	<select id="login" parameterType="customer" resultType="customer">
+		select * from customer where loginName=#{username} and PASSWORD=#{password}
+	</select>
+	<!-- 根据客户id查询客户信息 -->
+	<select id="getCustomerId" resultType="customer">
+		select * from customer where customerId=#{customerId}
+	</select>
+	<!-- 添加客户 -->
+	<insert id="addCustomer" parameterType="customer">
+		insert into customer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="customerId!=null">
+			customerId,
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			loginName,
+		</if>
+		<if test="realName!=null and realName!=''">
+			realName,
+		</if>
+		<if test="password!=null and password!=''">
+			password,
+		</if>
+		<if test="sex!=null">
+			sex,
+		</if>
+		<if test="address!=null and address!=''">
+			address,
+		</if>
+		<if test="phone!=null and phone!=''">
+			phone,
+		</if>
+		<if test="balance!=null and balance!=''">
+			balance,
+		</if>
+		<if test="username!=null and username!=''">
+			loginName,
+		</if>
+		<if test="phone_number!=null and phone_number!=''">
+			phone,
+		</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="customerId!=null">
+			#{customerId},
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			#{loginName},
+		</if>
+		<if test="realName!=null and realName!=''">
+			#{realName},
+		</if>
+		<if test="password!=null and password!=''">
+			#{password},
+		</if>
+		<if test="sex!=null">
+			#{sex},
+		</if>
+		<if test="address!=null and address!=''">
+			#{address},
+		</if>
+		<if test="phone!=null and phone!=''">
+			#{phone},
+		</if>
+		<if test="balance!=null and balance!=''">
+			#{balance},
+		</if>
+		<if test="username!=null and username !=''">
+			#{username},
+		</if>
+		<if test="phone_number!=null and phone_number !=''">
+			#{phone_number},
+		</if>
+		</trim>
+	</insert>
+	
+	<!-- 修改客户 -->
+	<update id="updateCustomer" parameterType="customer">
+		update customer 
+		<set> 
+			<if test="loginName!=null and loginName!=''">
+				loginName = #{loginName},
+			</if>
+			<if test="realName!=null and realName!=''">
+				realName = #{realName},
+			</if>
+			<if test="password!=null and password!=''">
+				password = #{password},
+			</if>
+			<if test="sex!=null">
+				sex =  #{sex},
+			</if>
+			<if test="address!=null">
+				address = #{address},
+			</if>
+			<if test="phone!=null and phone!=''">
+				phone = #{phone},
+			</if>
+			<if test="balance!=null and balance!=''">
+				balance = #{balance},
+			</if>
+		</set>
+		where customerId=#{customerId}
+	</update>
+	
+	<!-- 删除客户 -->
+	<delete id="deleteCustomer" parameterType="Integer">
+		delete from customer where customerId=#{customerId}
+	</delete>
+	
+	<!-- 重置密码 -->
+	<update id="updateCustomerPwd" parameterType="Integer">
+		update customer set password = 'e10adc3949ba59abbe56e057f20f883e' where customerId=#{customerId}
+	</update>
+	
+	<!-- 账号查重 -->
+	<select id="getCustomerLoginName" resultType="customer">
+		select * from customer where loginName = #{loginName}
+	</select>
+
+</mapper>

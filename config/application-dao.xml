@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xmlns:context="http://www.springframework.org/schema/context" 
+	   xmlns:tx="http://www.springframework.org/schema/tx" 
+	   xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	   xmlns:util="http://www.springframework.org/schema/util" 
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+	   http://www.springframework.org/schema/aop 
+	   http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
+	   http://www.springframework.org/schema/context 
+	   http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+	   http://www.springframework.org/schema/tx 
+	   http://www.springframework.org/schema/tx/spring-tx-4.3.xsd 
+	   http://www.springframework.org/schema/mvc 
+	   http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd 
+	   http://www.springframework.org/schema/util 
+	   http://www.springframework.org/schema/util/spring-util-4.3.xsd ">
+	<!-- 引入db.properties -->
+	<context:property-placeholder location="classpath:db.properties" system-properties-mode="FALLBACK"/>
+	<!-- 使用druid的数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" >
+		<!-- 注入连接属性 -->
+		<property name="driverClassName" value="${driverClassName}"></property>
+		<property name="url" value="${url}"></property>
+		<property name="username" value="${username}"></property>
+		<property name="password" value="${password}"></property>
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${initialSize}" />
+		<property name="minIdle" value="${minIdle}" />
+		<property name="maxActive" value="${maxActive}" />
+		
+	</bean>
+	<!-- 声明sessionFactory  -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 注入数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 注入mybatis.config.xml -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<!-- 注入mapper.xml -->
+		<property name="mapperLocations">
+			<array>
+				<value>classpath:dao/*/*Dao.xml</value>
+			</array>
+		</property>
+		<!-- 插件 -->
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor"></bean>
+			</array>
+		</property>
+	</bean>
+	
+	<!-- 扫描mapper接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 注入mapper接口所在的包   注意多个包的情况的配置-->
+		<property name="basePackage" >
+			<value>
+				com.ruanyuan.sys.dao
+				com.ruanyuan.stat.dao
+				com.ruanyuan.bus.dao
+				com.ruanyuan.bas.dao
+				com.ruanyuan.sam.dao
+			</value>
+		</property>
+		<!-- 注入sqlSessionFactory -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	   </beans>

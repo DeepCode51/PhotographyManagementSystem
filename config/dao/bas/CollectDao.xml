@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.bas.dao.CollectDao">
+	<!-- 映射 -->
+	<resultMap type="collect" id="AllCollection">
+		<id property="collectId" column="collectId"/>
+		<result property="sampleId" column="sampleId"/>
+		<result property="customerId" column="customerId"/>
+		<result property="collectTime" column="collectTime"/>
+		<!-- 一对一 -->
+		<association property="sample" javaType="Sample">
+			<id property="sampleId" column="sampleId"/>
+			<result property="sampleName" column="sampleName"/>	
+			<result property="typeId" column="typeId"/>	
+			<result property="userId" column="userId"/>	
+			<result property="sampleStock" column="sampleStock"/>	
+			<result property="sampleLogo" column="sampleLogo"/>	
+			<result property="sampleTime" column="sampleTime"/>	
+			<result property="sampleImage" column="sampleImage"/>	
+			<result property="samplePrice" column="samplePrice"/>	
+			<result property="collectionCount" column="collectionCount"/>	
+			<result property="orderCount" column="orderCount"/>	
+			<result property="subscribeCount" column="subscribeCount"/>
+		</association>
+		<!-- 一对一 -->
+		<association property="customer" javaType="Customer">
+			<id property="customerId" column="customerId"/>
+			<result property="loginName" column="loginName"/>	
+			<result property="realName" column="realName"/>	
+			<result property="password" column="password"/>	
+			<result property="sex" column="sex"/>	
+			<result property="address" column="address"/>	
+			<result property="phone" column="phone"/>	
+			<result property="balance" column="balance"/>	
+		</association>
+	</resultMap>
+	
+	<!-- 查询全部收藏信息 -->
+	<select id="getAllCollection" resultMap="AllCollection">
+		select t1.*,t2.*,t3.* from collection t1 INNER JOIN sample t2 INNER JOIN customer t3
+		on (t1.sampleId=t2.sampleId and t1.customerId=t3.customerId)
+		<where>
+			<if test="sampleName!=null and sampleName !=''">
+				and sampleName like concat("%",#{sampleName},"%")
+			</if>
+			<if test="realName!=null and realName !=''">
+				and realName like concat("%",#{realName},"%")
+			</if>
+			<if test="starttime!=null and starttime !=''">
+				and collectTime  >= #{starttime}
+			</if>
+			<if test="endtime!=null and endtime !=''">
+				and collectTime <![CDATA[<=]]> #{endtime}
+			</if>
+		</where>
+	</select>
+	<!-- 添加收藏信息 -->
+	<insert id="addCollection">
+		insert into collection
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sampleId != null">
+				sampleId,
+			</if>
+			<if test="customerId != null">
+				customerId,
+			</if>
+			<if test="collectTime != null">
+				collectTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sampleId != null">
+				#{sampleId},
+			</if>
+			<if test="customerId != null">
+				#{customerId},
+			</if>
+			<if test="collectTime != null">
+				#{collectTime},
+			</if>
+		</trim>
+	</insert>
+	<!-- 修改收藏信息 -->
+	<update id="updateCollection">
+		update collection 
+		<set>
+			<if test="sampleId != null">
+				sampleId = #{sampleId},
+			</if>
+			<if test="customerId != null">
+				customerId = #{customerId},
+			</if>
+			<if test="collectTime != null">
+				collectTime = #{collectTime},
+			</if>
+		</set>
+		where collectId = #{collectId}
+	</update>
+	
+	<!-- 根据收藏编号单个删除收藏 -->
+	<delete id="deleteCollectionByCollectId">
+		delete from collection where collectId=#{collectId}
+	</delete>
+	<!-- 根据客户编号单个删除收藏 -->
+	<delete id="deleteCollectBySampleId">
+		delete from collection where sampleId=#{sampleId}
+	</delete>
+	<!-- 批量删除收藏 -->
+	<delete id="deleteCollectionByArray">
+		delete from collection where collectId in 
+		<foreach collection="list" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	
+	<!-- 根据客户id查询收藏 -->
+	<select id="getCollectionCustomerId" resultMap="AllCollection">
+		select * from collection where customerId=#{customerId}
+	</select>
+	<!-- 根据客户编号查询收藏信息分页展示 -->
+	<select id="getCollectionByCustomerId" resultMap="AllCollection">
+		select t1.*,t2.* from collection t1 inner join sample t2 on (t1.sampleId=t2.sampleId) where t1.customerId=#{customerId}
+	</select>
+	<!-- 根据样片Id查询收藏信息 -->
+	<select id="getCollectBySampleId" resultType="Collect">
+		select * from collection where sampleId=#{sampleId}
+	</select>
+	
+	<!-- 根据客户id和样片Id查询收藏样片信息 -->
+	<select id="getCollectionCustomerIdAndSampleId" resultMap="AllCollection">
+		select * from collection where customerId=#{customerId} and sampleId=#{sampleId}
+	</select>
+	
+	<!-- 根据收藏编号查询收藏信息 -->
+	<select id="getCollectionByCollectId" resultMap="AllCollection">
+		select t1.*,t2.*,t3.* from collection t1 INNER JOIN sample t2 INNER JOIN customer t3
+		on (t1.sampleId=t2.sampleId and t1.customerId=t3.customerId) 
+		where collectId=#{collectId}
+	</select>
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.sam.dao.IntentionDao">
+	<!-- 映射 -->
+	<resultMap type="Intention" id="AllIntention">
+		<id property="intentionId" column="intentionId"/>
+		<result property="sampleId" column="sampleId"/>
+		<result property="customerId" column="customerId"/>
+		<result property="intentionTime" column="intentionTime"/>
+		<!-- 一对一 -->
+		<association property="sample" javaType="Sample">
+			<id property="sampleId" column="sampleId"/>
+			<result property="sampleName" column="sampleName"/>	
+			<result property="typeId" column="typeId"/>	
+			<result property="userId" column="userId"/>	
+			<result property="sampleStock" column="sampleStock"/>	
+			<result property="sampleLogo" column="sampleLogo"/>	
+			<result property="sampleTime" column="sampleTime"/>	
+			<result property="sampleImage" column="sampleImage"/>	
+			<result property="samplePrice" column="samplePrice"/>	
+			<result property="collectionCount" column="collectionCount"/>	
+			<result property="orderCount" column="orderCount"/>	
+			<result property="subscribeCount" column="subscribeCount"/>
+		</association>
+		<!-- 一对一 -->
+		<association property="customer" javaType="Customer">
+			<id property="customerId" column="customerId"/>
+			<result property="loginName" column="loginName"/>	
+			<result property="realName" column="realName"/>	
+			<result property="password" column="password"/>	
+			<result property="sex" column="sex"/>	
+			<result property="address" column="address"/>	
+			<result property="phone" column="phone"/>	
+			<result property="balance" column="balance"/>	
+		</association>
+	</resultMap>
+	
+	<!-- 查询全部意向样片信息 -->
+	<select id="getAllIntention" resultMap="AllIntention">
+		select t1.*,t2.*,t3.* from intention t1 INNER JOIN sample t2 INNER JOIN customer t3
+		on (t1.sampleId=t2.sampleId and t1.customerId=t3.customerId)
+		<where>
+			<if test="sampleName!=null and sampleName !=''">
+				and sampleName like concat("%",#{sampleName},"%")
+			</if>
+			<if test="realName!=null and realName !=''">
+				and realName like concat("%",#{realName},"%")
+			</if>
+			<if test="starttime!=null and starttime !=''">
+				and intentionTime  >= #{starttime}
+			</if>
+			<if test="endtime!=null and endtime !=''">
+				and intentionTime <![CDATA[<=]]> #{endtime}
+			</if>
+		</where>
+	</select>
+	<!-- 添加意向样片信息 -->
+	<insert id="addIntention">
+		insert into intention
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sampleId != null">
+				sampleId,
+			</if>
+			<if test="customerId != null">
+				customerId,
+			</if>
+			<if test="intentionTime != null">
+				intentionTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sampleId != null">
+				#{sampleId},
+			</if>
+			<if test="customerId != null">
+				#{customerId},
+			</if>
+			<if test="intentionTime != null">
+				#{intentionTime},
+			</if>
+		</trim>
+	</insert>
+	<!-- 修改收藏信息 -->
+	<update id="updateIntention">
+		update intention 
+		<set>
+			<if test="sampleId != null">
+				sampleId = #{sampleId},
+			</if>
+			<if test="customerId != null">
+				customerId = #{customerId},
+			</if>
+			<if test="intentionTime != null">
+				intentionTime = #{intentionTime},
+			</if>
+		</set>
+		where intentionId = #{intentionId}
+	</update>
+	
+	<!-- 根据意向样片编号单个删除意向样片 -->
+	<delete id="deleteIntentionByIntentionId">
+		delete from intention where intentionId=#{intentionId}
+	</delete>
+	<!-- 批量删除意向样片 -->
+	<delete id="deleteIntentionByArray">
+		delete from intention where intentionId in 
+		<foreach collection="list" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	
+	<!-- 根据客户id查询意向样片信息 -->
+	<select id="getIntentionCustomerId" resultMap="AllIntention">
+		select * from intention where customerId=#{customerId}
+	</select>
+	
+	<!-- 根据客户编号查询收藏信息分页展示 -->
+	<select id="getIntentionByCustomerId" resultMap="AllIntention">
+		select t1.*,t2.* from intention t1 inner join sample t2 on (t1.sampleId=t2.sampleId) where t1.customerId=#{customerId}
+	</select>
+	<!-- 根据意向编号查询意向样片信息 -->
+	<select id="getIntentionById" resultMap="AllIntention">
+		select t1.*,t2.*,t3.* from intention t1 INNER JOIN sample t2 INNER JOIN customer t3
+		on (t1.sampleId=t2.sampleId and t1.customerId=t3.customerId) 
+		where intentionId=#{intentionId}
+	</select>
+	
+	<!-- 根据客户id和样片Id查询意向样片信息 -->
+	<select id="getIntentionCustomerIdAndSampleId" resultMap="AllIntention">
+		select * from intention where customerId=#{customerId} and sampleId=#{sampleId}
+	</select>
+	
+	<!-- 根据样片Id查询意向信息getIntentionBySampleId -->
+	<select id="getIntentionBySampleId" resultType="Intention">
+		select * from intention where sampleId=#{sampleId}
+	</select>
+	
+</mapper>

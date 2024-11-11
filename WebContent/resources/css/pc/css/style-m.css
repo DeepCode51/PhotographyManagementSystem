@@ -1,0 +1,331 @@
+@media (max-width: 768px) {
+  /* 1.头部变化 */
+  .header {
+    display: none;
+  }
+  .header-m {
+    display: block;
+    width: 100%;
+    height: 80px;
+  }
+  .header-m.active {
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+  }
+  .header-m .header-c {
+    transition: all 0.5s ease-in;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: auto;
+    padding-left: 0;
+    display: flex;
+  }
+  .header-m .header-c .logo {
+    width: 89px;
+    margin-left: 15px;
+  }
+  .header-m .header-c .logo .logo1 {
+    width: 89px;
+    display: block;
+  }
+  .header-m .header-c .logo .logo2 {
+    width: 24px;
+    padding: 4px 0 0 32px;
+    display: block;
+  }
+  /* 工具栏 */
+  .header-m .header-c .btn {
+    display: block;
+    font-family: "iconfont";
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 40px;
+  }
+
+  .header-m .header-c .icon-caidan {
+    transition: all 0.4s linear;
+  }
+  .header-m .header-c .icon-close {
+    transform: rotate(-90deg);
+    transition: all 0.4s linear;
+  }
+/* 导航栏 */
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  .content {
+    width: 100%;
+    height: 100%;
+  }
+.header-m .header-c .nav .nav-item {
+    margin-left:0px;
+    /* padding: 25px 0; */
+}
+.header-m .header-c .nav a:after { 
+    width:0;
+    height: 0px;
+    /* background-color: #b9ab77; */
+}
+.header-c .nav  a{
+  color: #1d1d1d;
+  line-height:0px;
+}
+.header-m .header-c .nav .nav-item{
+  padding: 25px;
+}
+.header-m .header-c .nav .nav-item:first-child{
+  padding-top: 65px;
+}
+.header-c .nav .active a {
+  transform: scale(1);
+  color: #b9ab77;
+}
+.header-c .nav .nav-item:hover a {
+  transform: scale(1);
+  color: #1d1d1d;
+}
+  .header-m .header-c .nav {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 40px;
+    width: 100%;
+    height: calc(100% - 40px);
+    z-index: 20;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  .header-m .header-c .nav.active {
+    display: block;
+  }
+  .containner.active{
+    filter: blur(9px);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+  /* 头部导航栏 */
+
+  /*2. bananer */
+  .banner .swiper-button-next,
+  .banner .swiper-button-prev {
+    display: none;
+  }
+  /* 3.内容 */
+  /* 3.1婚纱礼服 */
+  .main-c {
+    width: 100%;
+  }
+  .main-c .wedding {
+    margin-top: 40px;
+  }
+  .title {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    padding: 60px 0 35px;
+  }
+  .title .eng {
+    font-size: 13px;
+  }
+  .wedding > .swiper {
+    padding: 60px 0px 0;
+    margin: 0 10px;
+  }
+
+  /* 轮播 */
+  .wedding .swiper-pagination-bullet {
+    padding: 0;
+}
+  .wedding .swiper-contai {
+    display: none;
+  }
+  .wedding .swiper-contai.swiper {
+    display: block;
+  }
+  .wedding .swiper-pagination-bullet {
+    font-size: 13px;
+    width: 22%;
+    padding-top: 13px;
+    box-sizing: border-box;
+  }
+  .wedding .swiper-pagination {
+    z-index: 10;
+    top: 0;
+  }
+  .wedding .swiper-wrapper {
+    width: 100%;
+  }
+  /* swiper图片 */
+  .swiper .swiper-wrapper .swiper-slide {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+  }
+  .swiper .swiper-wrapper .swiper-slide {
+    filter: grayscale(0%);
+  }
+  .swiper .swiper-wrapper .swiper-slide img {
+    width: 48%;
+    margin-right: 5px;
+  }
+  /* 更多 */
+  .wedding .more {
+    margin: 40px auto;
+  }
+  /* 3.2 珠宝 */
+  .jewelry-c {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .jewelry-c .title {
+    padding: 60px 0 35px;
+  }
+  .jewelry {
+    padding-bottom: 70px;
+  }
+  .jewelry-c .nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .jewelry-c .nav .nav-item {
+    margin: auto;
+  }
+  .jewelry-c .nav .nav-item img {
+    width: 325px;
+    vertical-align: middle;
+  }
+  .jewelry-c .nav .nav-item .mask {
+    opacity: 1;
+  }
+  .jewelry-c .more {
+    margin: 70px auto 0;
+  }
+
+  /* 3.3 最新活动 */
+
+  .activvities .activvities-c .swiper-about {
+    display: block;
+    overflow: hidden;
+}
+  .activvities .activvities-c {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .activvities .activvities-c .title {
+    padding: 60px 0 35px;
+  }
+  .activvities .activvities-c .nav {
+    display: none;
+  }
+  /* 轮播 */
+  .activvities-c .swiper-container .nav {
+    display: block;
+  }
+  .swiper-about{
+    padding-right: 20px;
+  }
+  .swiper-about .swiper-wrapper {
+    width: 100%;
+  }
+  .swiper-about .swiper-slide {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+  }
+  .swiper-about .swiper-slide img {
+    width: 50%;
+    height: 238px;
+  }
+  .swiper-about .swiper-slide .mask {
+    width: 50%;
+    height: 238px;
+    padding:10px ;
+    box-sizing: border-box;
+    background-color: RGB(241, 239, 240, 0.9);
+  }
+  .swiper-about .swiper-slide .mask h3{
+    font-size: 20px;
+    color: #939393;
+    margin-bottom: 15px;
+  }
+  .swiper-about  .mask h3 span{
+    font-size: 12px;
+  }
+  .swiper-about  .mask h4{
+    font-size: 14px;
+    font-weight: bolder;
+  }
+  .swiper-about  .mask p{
+    font-size: 13px;
+    margin-top: 20px;
+    margin-bottom: 55px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    color: #000;
+  }
+  .activvities-c .more{
+    margin: 20px auto 0;
+}
+.activvities {
+  padding-bottom: 20px;
+}
+/*3.4 设计师  */
+.designers .designers-c {
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+.designers-c .nav {
+  display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
+.designers-c .text a {
+  margin:30px auto 100px;
+  width: 60px;
+  height: 36px;
+  line-height: 36px;
+}
+/* 4.底部 */
+.footer{
+  height: 80px;
+}
+.footer-c {
+  width:100%;
+  margin: 0 auto;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.footer-c .left {
+  height: 100%;
+}
+.footer-c .left p {
+  line-height: 24px;
+  margin: 0;
+}
+.footer-c .right p, .footer-c {
+  line-height: 24px;
+}
+.footer-c .right p, .footer-c .right a {
+  margin-right: 0px;
+  margin-left: 10px;
+  line-height: 24px;
+}
+  /* 最外面 */
+}

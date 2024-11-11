@@ -1,0 +1,308 @@
+/* 1.头部开始 */
+.header {
+  height: 80px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  background-color: #fff;
+  transition: all .4s ease-in;
+}
+.header-m{
+  display: none;
+}
+.header.active {
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+.header .header-c{
+  position: relative;
+  height: 100%;
+  width: 1200px;
+  margin: auto;
+  padding-right: 60px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header .header-c-m{
+  display: none;
+}
+.header .header-c a img {
+  display:block;
+}
+.header .header-c a .logo1{
+    padding: 0px 0 0 65px;
+    width: 129px;
+    height: 60px;
+}
+/*.header .header-c a .logo2{
+  padding: 7px 0 0 65px;
+}*/
+.header .header-c .nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.nav-login{
+}
+.header-c .nav .nav-item {
+  margin-left: 65px;
+}
+.header-c .nav a {
+  transition: all 0.2s;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: #666;
+  padding: 10px;
+  box-sizing: border-box;
+  line-height: 50px;
+  text-align: center;
+}
+.header-c .nav a:after {
+  display: none;
+  position: absolute;
+  left: 15px;
+  bottom: 14px;
+  content: "";
+  width: calc((100% - 20px) * 0.75);
+  height: 1px;
+  background-color: #b9ab77;
+  text-align: center;
+}
+.header-c .nav .active a:after {
+  display: block;
+}
+.header-c .nav .active a {
+  transform: scale(1.1);
+  color: #1d1d1d;
+}
+.header-c .nav .nav-item:hover a:after {
+  display: block;
+}
+.header-c .nav .nav-item:hover a {
+  transform: scale(1.1);
+  color: #1d1d1d;
+}
+/* 2.banner部分开始 */
+.banner {
+  margin-top: 80px;
+}
+.swiper-wrapper {
+  width: 1502px;
+}
+.swiper-slide {
+  width: 1502px;
+}
+.swiper-slide image {
+  display: block;
+  width: 1502px;
+  height: 100%;
+}
+.banner .swiper-button-prev,
+.banner .swiper-button-next {
+  background-image: url(../img/banner-left-arr.png);
+  background-size: 50px 60px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 50px;
+  height: 79px;
+}
+.banner .swiper-button-next:after,
+.banner .swiper-button-prev:after {
+  content: "";
+}
+.banner .swiper-button-next {
+  background-image: url(../img/banner-right-arr.png);
+}
+.banner .swiper-button-next:hover,
+.banner .swiper-button-prev:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.banner .swiper-pagination-bullet {
+  width: 20px;
+  height: 3px;
+  display: inline-block;
+  background-color: RGB(250, 250, 250);
+  border-radius: 3px;
+  opacity: 1;
+}
+.banner .swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: RGB(225, 204, 218);
+}
+.banner .swiper-slide img {
+  width: 100%;
+}
+/* 3.内容 */
+/* 3.1婚纱礼服 */
+.main-c {
+  width: 1200px;
+  margin: auto;
+}
+.main-c .wedding {
+  margin-top: 80px;
+}
+.title {
+  font-size: 26px;
+  color: #444444;
+  text-align: center;
+}
+.title .eng {
+  color: #c1c1c1;
+  font-size: 16px;
+}
+/* 婚纱轮播 */
+.wedding .swiper-contai {
+  padding-top: 160px;
+  overflow: hidden;
+  position: relative;
+}
+.wedding .swiper-wrapper {
+  width: 1200px;
+}
+.main-c .wedding .swiper-slide {
+  position: relative;
+  width: 270px;
+  height: 360px;
+ /* filter: grayscale(100%); */
+}
+.main-c .wedding .swiper-slide .mask {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  right: 0;
+  bottom: 0;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.4s ease-in-out;
+  transition-delay: 0.4s;
+}
+.main-c .wedding .swiper-slide .mask h3 {
+  font-size: 14px;
+  margin: 120px auto 30px auto;
+}
+.main-c .wedding .swiper-slide .mask p {
+  font-size: 12px;
+  line-height: 2;
+}
+.main-c .wedding .swiper-slide:hover {
+  filter: grayscale(0%);
+}
+.main-c .wedding .swiper-slide:hover .mask {
+  opacity: 1;
+}
+.wedding>.swiper{
+  display: none;
+}
+.wedding .swiper-pagination {
+  /* background-color: green; */
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.wedding .swiper-pagination-bullet {
+  width: 90px;
+  height: 100%;
+  border-radius: 0;
+  background-color: #fff; 
+  opacity: 1;
+  font-size: 16px;
+  color: #4d4d4d;
+  padding: 0 10px;
+}
+.wedding .swiper-pagination-bullet-active::after {
+  content: "";
+  display: block;
+  margin: 10px auto;
+  width: 4px;
+  height: 4px;
+  background-color: currentColor;
+  border-radius: 50%;
+}
+.wedding .swiper-pagination-bullet-active {
+  background: #fff;
+  color: #b9ab77;
+}
+/* 更多 */
+.more {
+  width: 148px;
+  height: 43px;
+  border: 1px solid #b9ab77;
+  margin: 80px auto 60px;
+}
+.more a {
+  display: block;
+  height: 100%;
+  color: #2d2d2d;
+  line-height: 46px;
+  text-align: center;
+}
+
+/* 底部 */
+.footer {
+  height: 100px;
+  background-color: #4d4d4d;
+}
+.footer-c {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+.footer-c .left {
+  height: 100px;
+  font-size: 12px;
+  color: #fff;
+}
+.footer-c .left p {
+  margin: 35px 0 13px;
+}
+.footer-c .right {
+  display: flex;
+  font-size: 12px;
+  color: #fff;
+}
+.footer-c .right p,
+.footer-c .right a {
+  margin-right: 48px;
+}
+.footer-c .right a {
+  color: #fff;
+}
+/* 广告跟随 */
+.toup {
+  position: absolute;
+  right: 200px;
+  bottom: 100px;
+  z-index: 5;
+}
+.toup a {
+  width: 52px;
+  height: 52px;
+  background: rgba(0, 0, 0, 0.1) url(../img/toup-icon.png) no-repeat center
+    center;
+  display: block;
+  border: 1px solid #d3d4d66e;
+}
+.toup a:hover {
+  animation: rubberBand 0.5s 1;
+  border-color: #b9ab77;
+}

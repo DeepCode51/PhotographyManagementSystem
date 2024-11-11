@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<context:component-scan base-package="com.ruanyuan.sys.service.impl"></context:component-scan>
+	<context:component-scan base-package="com.ruanyuan.bus.service.impl"></context:component-scan>
+	<context:component-scan base-package="com.ruanyuan.stat.service.impl"></context:component-scan>
+	<context:component-scan base-package="com.ruanyuan.sam.service.impl"></context:component-scan>
+	<context:component-scan base-package="com.ruanyuan.bas.service.impl"></context:component-scan>
+	
+	<!-- 1,声明事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		 <property name="dataSource" ref="dataSource"></property>
+	</bean>	
+	<!-- 启动注解事务 -->
+	<!-- <tx:annotation-driven/> -->
+	<!-- 2,声明事务的传播特性 也就是通知 -->
+	<tx:advice id="advise" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- 以add开头的方法名需要事务 -->
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>		
+			<tx:method name="delete*" propagation="REQUIRED"/>		
+			<tx:method name="change*" propagation="REQUIRED"/>		
+			<tx:method name="reset*" propagation="REQUIRED"/>	
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="load*" read-only="true"/>
+			<tx:method name="*" read-only="true"/>	
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 操作日志 -->
+	<!--  --><bean class="com.ruanyuan.sys.utils.AfterLog" id="loga"/>
+	
+	<!-- 3进行AOP织入 -->
+	<aop:config>
+		<!-- 声明切面 -->
+		<aop:pointcut expression="execution(* com.ruanyuan.sys.service.impl.*.*(..))" id="pc1"/>
+		<aop:pointcut expression="execution(* com.ruanyuan.bus.service.impl.*.*(..))" id="pc2"/>
+		<aop:pointcut expression="execution(* com.ruanyuan.stat.service.impl.*.*(..))" id="pc3"/>
+		<aop:pointcut expression="execution(* com.ruanyuan.bas.service.impl.*.*(..))" id="pc4"/>
+		<aop:pointcut expression="execution(* com.ruanyuan.sam.service.impl.*.*(..))" id="pc5"/>
+		<!-- 织入 -->
+		<aop:advisor advice-ref="advise" pointcut-ref="pc1"/>
+		<aop:advisor advice-ref="advise" pointcut-ref="pc2"/>
+		<aop:advisor advice-ref="advise" pointcut-ref="pc3"/>
+		<aop:advisor advice-ref="advise" pointcut-ref="pc4"/>
+		<aop:advisor advice-ref="advise" pointcut-ref="pc5"/>
+		
+		<!--  --><aop:advisor advice-ref="loga" pointcut-ref="pc1"/>
+		<aop:advisor advice-ref="loga" pointcut-ref="pc2"/>
+		<aop:advisor advice-ref="loga" pointcut-ref="pc3"/>
+		<aop:advisor advice-ref="loga" pointcut-ref="pc4"/>
+		<aop:advisor advice-ref="loga" pointcut-ref="pc5"/>
+	</aop:config>
+	
+	<!-- 日志 -->
+	<!-- <aop:aspectj-autoproxy proxy-target-class="true" />
+	<bean id="logAspect" class="com.ruanyuan.sys.utils.LogAspect" /> -->
+
+</beans>

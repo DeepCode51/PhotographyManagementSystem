@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.sam.dao.ImageDao">
+	<!-- 映射 -->
+	<resultMap type="Image" id="AllImage">
+		<id property="imageId" column="imageId"/>
+		<result property="imageAddress" column="imageAddress"/>
+		<result property="sampleId" column="sampleId"/>
+		<!-- 一对一 -->
+		<association property="sample" javaType="Sample">
+			<id property="sampleId" column="sampleId"/>
+			<result property="sampleName" column="sampleName"/>	
+			<result property="typeId" column="typeId"/>	
+			<result property="userId" column="userId"/>	
+			<result property="sampleStock" column="sampleStock"/>	
+			<result property="sampleLogo" column="sampleLogo"/>	
+			<result property="sampleTime" column="sampleTime"/>	
+			<result property="sampleImage" column="sampleImage"/>	
+			<result property="samplePrice" column="samplePrice"/>	
+			<result property="collectionCount" column="collectionCount"/>	
+			<result property="orderCount" column="orderCount"/>	
+			<result property="subscribeCount" column="subscribeCount"/>
+		</association>
+	</resultMap>
+	<!-- 查询全部图片信息 -->
+	<select id="getAllImage" resultMap="AllImage">
+		SELECT t1.*,t2.* FROM image t1 INNER JOIN sample t2 
+		ON (t1.sampleId=t2.sampleId)
+		<where>
+			<if test="sampleName!=null and sampleName !=''">
+				and sampleName like concat("%",#{sampleName},"%")
+			</if>
+			<if test="sampleId!=null and sampleId!=''">
+				and t1.sampleId=#{sampleId}
+			</if>
+		</where>
+	</select>
+	<!-- 查询全部图片信息 -->
+	<select id="getAllImage1" resultMap="AllImage">
+		SELECT t1.*,t2.sampleName FROM image t1 INNER JOIN sample t2 
+		ON (t1.sampleId=t2.sampleId)
+		<where>
+		<if test="sampleId!=null and sampleId !=''">
+			and t1.sampleId  = #{sampleId}
+		</if>
+		</where>
+		order by imageId
+	</select>
+	<!-- 添加图片信息 -->
+	<insert id="addImage">
+		insert into image
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="imageAddress != null">
+				imageAddress,
+			</if>
+			<if test="sampleId != null">
+				sampleId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="imageAddress != null">
+				#{imageAddress},
+			</if>
+			<if test="sampleId != null">
+				#{sampleId},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 修改图片信息 -->
+	<update id="updateImage">
+		update image 
+		<set>
+			<if test="imageAddress != null">
+				imageAddress = #{imageAddress},
+			</if>
+			<if test="sampleId != null">
+				sampleId = #{sampleId},
+			</if>
+		</set>
+		where imageId = #{imageId}
+	</update>
+	
+	<!-- 根据图片编号单个删除图片 -->
+	<delete id="deleteImageByImageId">
+		delete from image where imageId=#{imageId}
+	</delete>
+	
+	<!-- 批量删除图片 -->
+	<delete id="deleteImageByArray">
+		delete from image where imageId in 
+		<foreach collection="list" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	<!-- 根据样片Id查询图片 getImageBySample -->
+	<select id="getImageBySample" resultType="Image">
+		select * from image where sampleId = #{sampleId}
+	</select>
+	
+	<!-- 根据图片Id查询信息 -->
+	<select id="getImageByImageId" resultType="Image">
+		select * from image where imageId = #{imageId}
+	</select>
+	<!-- 根据图片数组id查询图片 -->
+	<select id="getImageByImageIdByArray" parameterType="Integer[]" resultType="Image">
+		select * from image where imageId in 
+		<foreach collection="array" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</select>
+</mapper>

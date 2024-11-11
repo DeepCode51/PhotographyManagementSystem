@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xmlns:context="http://www.springframework.org/schema/context" 
+	   xmlns:tx="http://www.springframework.org/schema/tx" 
+	   xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	   xmlns:util="http://www.springframework.org/schema/util" 
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+	   http://www.springframework.org/schema/aop 
+	   http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
+	   http://www.springframework.org/schema/context 
+	   http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+	   http://www.springframework.org/schema/tx 
+	   http://www.springframework.org/schema/tx/spring-tx-4.3.xsd 
+	   http://www.springframework.org/schema/mvc 
+	   http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd 
+	   http://www.springframework.org/schema/util 
+	   http://www.springframework.org/schema/util/spring-util-4.3.xsd ">
+	   <!-- 扫描 -->
+	   <context:component-scan base-package="com.ruanyuan.sys.controller"></context:component-scan>
+	   <context:component-scan base-package="com.ruanyuan.bus.controller"></context:component-scan>
+	   <context:component-scan base-package="com.ruanyuan.bas.Controller"></context:component-scan>
+	   <context:component-scan base-package="com.ruanyuan.sam.controller"></context:component-scan>
+	   <context:component-scan base-package="com.ruanyuan.stat.controller"></context:component-scan>
+	   <!-- 配置映射器 和适配器 -->
+	   <mvc:annotation-driven></mvc:annotation-driven>
+	   <!-- 配置视图解析器 -->
+	   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		   	<!-- 注入前缀 -->
+		   	<property name="prefix" value="/WEB-INF/view/"></property>
+		   	<property name="suffix" value=".jsp"></property>	  
+	   	</bean>
+
+	   	<!-- 配置springmvc对文件上传的支持 -->
+	   	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	   		<!-- 设置文件名的编码 -->
+	   		<property name="defaultEncoding" value="utf-8"></property>
+	   		<!-- 配置上传文件的支持 20m-->
+	   		<property name="maxUploadSize" value="20971520" ></property>
+	   	</bean>
+	   	<!-- 配置静态文件放行
+	   	<mvc:default-servlet-handler/>-->
+	    <mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	    	<!-- 配置拦截器 -->
+		<mvc:interceptors>
+			<mvc:interceptor>
+				<!-- 定义在<mvc: interceptor>元素中，表示匹配指定路径的请求才进行拦截 -->
+				<mvc:mapping path="/login/toIndex" />
+				<bean class="com.ruanyuan.sys.interceptor.LoginInterceptor" />
+			</mvc:interceptor>
+			<mvc:interceptor>
+				<!-- 定义在<mvc: interceptor>元素中，表示匹配指定路径的请求才进行拦截 -->
+				<mvc:mapping path="/pc/toPersonalInfo" />
+				<mvc:mapping path="/pc/toPersonalCenter" />
+				<bean class="com.ruanyuan.bas.interceptor.LoginInterceptor" />
+			</mvc:interceptor>
+		</mvc:interceptors>
+
+	   </beans>

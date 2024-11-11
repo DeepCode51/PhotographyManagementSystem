@@ -1,0 +1,232 @@
+/* 1.头部开始 */
+.header {
+  height: 80px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  background-color: #fff;
+  transition: all .4s ease-in;
+}
+.header-m{
+  display: none;
+}
+.header.active {
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+.header .header-c{
+  position: relative;
+  height: 100%;
+  width: 1200px;
+  margin: auto;
+  padding-right: 60px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header .header-c-m{
+  display: none;
+}
+.header .header-c a img {
+  display:block;
+}
+.header .header-c a .logo2{
+  padding: 7px 0 0 65px;
+}
+.header .header-c .nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.header-c .nav .nav-item {
+  margin-left: 65px;
+}
+.header-c .nav a {
+  transition: all 0.2s;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: #666;
+  padding: 10px;
+  box-sizing: border-box;
+  line-height: 50px;
+  text-align: center;
+}
+.header-c .nav a:after {
+  display: none;
+  position: absolute;
+  left: 15px;
+  bottom: 14px;
+  content: "";
+  width: calc((100% - 20px) * 0.75);
+  height: 1px;
+  background-color: #b9ab77;
+  text-align: center;
+}
+.header-c .nav .active a:after {
+  display: block;
+}
+.header-c .nav .active a {
+  transform: scale(1.1);
+  color: #1d1d1d;
+}
+.header-c .nav .nav-item:hover a:after {
+  display: block;
+}
+.header-c .nav .nav-item:hover a {
+  transform: scale(1.1);
+  color: #1d1d1d;
+}
+/* 2.banner */
+.banner {
+  margin-top: 80px;
+}
+.banner .swiper-wrapper .swiper-slide {
+  height: 230px;
+}
+/* 3.main */
+.title {
+  margin: 100px auto 70px;
+  font-size: 26px;
+  color: #444444;
+  text-align: center;
+}
+.title .eng {
+  color: #c1c1c1;
+  font-size: 16px;
+}
+/*  3.1 store*/
+.store .content-c {
+  width: 1080px;
+  margin: 0 auto;
+}
+.store .content-c .top {
+  display: flex;
+  position: relative;
+}
+.store .content-c .top img {
+  margin-right: 65px;
+}
+.store .content-c .top p {
+  text-indent: 2em;
+  width: 100%;
+  color: #6b6b6b;
+  font-size: 16px;
+  line-height: 24px;
+}
+.store .content-c .top .mask {
+  width: 422px;
+  height: 314px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-align: center;
+  line-height: 314px;
+  color: #fff;
+  font-size: 30px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.store .content-c > p {
+  text-indent: 2em;
+  color: #6b6b6b;
+  font-size: 16px;
+  line-height: 24px;
+  margin-top: 50px;
+}
+/* 4.link */
+.link-c {
+  width: 1080px;
+  margin: 0 auto;
+}
+.link-c > h3 {
+  font-size: 26px;
+  color: #6b6b6b;
+  padding: 5px 0;
+}
+.link-c > p {
+  font-size: 16px;
+  color: #616060;
+  line-height: 1.4;
+}
+/* 地图 */
+.link-c .map {
+  margin: 40px 0 60px;
+  display: flex;
+ 
+}
+.link-c #container {
+  width: 475px;
+  height: 270px;
+  margin-right: 40px;
+}
+.link-c .map .text {
+  display: flex;
+  align-items: flex-end;
+}
+.link-c .map .text p {
+  text-indent: 2em;
+  font-size: 16px;
+  color: #616060;
+  line-height: 28px;
+
+}
+/* 底部 */
+.footer {
+  height: 100px;
+  background-color: #4d4d4d;
+}
+.footer-c {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  font-size: 12px;
+}
+.footer-c .left {
+  height: 100px;
+  font-size: 12px;
+}
+.footer-c .left p {
+  margin: 35px 0 13px;
+}
+.footer-c .right {
+  display: flex;
+}
+.footer-c .right p,
+.footer-c .right a {
+  margin-right: 48px;
+}
+.footer-c .right a {
+  color: #fff;
+}
+/* 广告跟随 */
+.toup {
+  position: absolute;
+  right: 200px;
+  bottom: 100px;
+  z-index: 5;
+}
+.toup a {
+  width: 52px;
+  height: 52px;
+  background: rgba(0, 0, 0, 0.1) url(../img/toup-icon.png) no-repeat center
+    center;
+  display: block;
+  border: 1px solid #d3d4d66e;
+}
+.toup a:last-child {
+  background: rgba(0, 0, 0, 0.1) url(../img/phone-icon.png) no-repeat center
+    center;
+}
+.toup a:hover {
+  animation: rubberBand 0.5s 1;
+  border-color: #b9ab77;
+}

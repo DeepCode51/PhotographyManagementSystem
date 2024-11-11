@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.sys.dao.HandleDao">
+	<!-- 映射 -->
+	<resultMap type="handle" id="AllHandle">
+		<id column="handleId" property="handleId" />
+		<result column="userId" property="userId" />
+		<result column="handleContent" property="handleContent" />
+		<result column="handleTime" property="handleTime" />
+		<!-- 一对一 -->
+		<association property="user" javaType="User">
+			<id property="userId" column="userId"/>
+			<result property="loginName" column="loginName"/>
+			<result property="realName" column="realName"/>
+			<result property="password" column="password"/>
+			<result property="sex" column="sex"/>
+			<result property="address" column="address"/>
+			<result property="userImage" column="userImage"/>
+			<result property="isApproval" column="isApproval"/>
+			<result property="member" column="member"/>
+			<result property="phone" column="phone"/>
+			<result property="job" column="job"/>
+		</association>
+	</resultMap>
+	<!-- 查询 操作日志信息 -->
+	<select id="getAllHandle" resultMap="AllHandle">
+			SELECT t1.*,t2.realName FROM handle t1 ,user t2
+		<where>
+			t1.userId = t2.userId 
+			<if test="realName !=null and realName !=''">
+				and realName like concat("%",#{realName},"%")
+			</if>
+			<if test="startHandleTime !=null and startHandleTime !=''">
+				and handleTime >= #{startHandleTime}
+			</if>
+			<if test="endHandleTime != null and endHandleTime !=''">
+				and handleTime <![CDATA[<=]]> #{endHandleTime}
+			</if>
+			<if test="handleContent != null and handleContent !=''">
+				and handleContent like concat("%",#{handleContent},"%")
+			</if>
+			order by t1.handleId DESC
+		</where>
+	</select>
+	<!-- 添加 操作日志信息 -->
+	<insert id="addHandle">
+		INSERT INTO handle(userId,handleContent,handleTime) VALUE(#{userId},#{handleContent},#{handleTime})
+	</insert>
+	<!-- 删除 操作日志信息 -->
+	<delete id="deleteHandle">
+		DELETE  FROM handle WHERE handleId=#{handle}
+	</delete>
+	<!-- 根据用户id查询操作日志信息 -->
+	<select id="getHandleUserId" resultMap="AllHandle">
+		select * from handle where userId=#{userId}
+	</select>
+	
+	<!-- 批量删除登录日志信息 -->
+	<delete id="deleteHandleByArray" parameterType="Integer[]">
+		delete from handle where handleId in
+		<foreach collection="array" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+</mapper>

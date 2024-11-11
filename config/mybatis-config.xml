@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<!-- 配置别名 -->
+	<typeAliases>
+		<package name="com.ruanyuan.sys.pojo"/>
+		<package name="com.ruanyuan.bus.pojo"/>
+		<package name="com.ruanyuan.stat.pojo"/>
+		<package name="com.ruanyuan.bas.pojo"/>
+		<package name="com.ruanyuan.sam.pojo"/>
+	</typeAliases>
+</configuration>

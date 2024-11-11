@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.sam.dao.RotationDao">
+	
+	<!-- 映射 -->
+	<resultMap type="Rotation" id="resultMap">
+		<id property="rotationId" column="rotationId"/>
+		<result property="rotationName" column="rotationName"/>	
+		<result property="rotationImage" column="rotationImage"/>	
+		<result property="sampleId" column="sampleId"/>	
+		<result property="ranking" column="ranking"/>	
+		<result property="rotationTime" column="rotationTime"/>	
+		<!-- 一对一 -->
+		<association property="sample" javaType="Sample">
+			<id property="sampleId" column="sampleId" />
+			<result property="typeId" column="typeId" />
+			<result property="userId" column="userId" />
+			<result property="sampleName" column="sampleName" />
+			<result property="sampleStock" column="sampleStock" />
+			<result property="sampleLogo" column="sampleLogo" />
+			<result property="sampleTime" column="sampleTime" />
+			<result property="sampleImage" column="sampleImage" />
+			<result property="samplePrice" column="samplePrice" />
+			<result property="collectionCount" column="collectionCount" />
+			<result property="orderCount" column="orderCount" />
+			<result property="subscribeCount" column="subscribeCount" />
+		</association>
+	</resultMap>
+	
+	<!-- 查询所有轮播图 -->
+	<select id="getAllRotation" resultMap="resultMap">
+		SELECT t1.*,t2.* FROM rotation t1 INNER JOIN
+		sample t2 ON (t1.sampleId=t2.sampleId)
+		<where>
+			<if test="rotationName!=null and rotationName!=''">
+				and rotationName like concat("%",#{rotationName},"%")
+			</if>
+			<if test="sampleName!=null and sampleName!=''">
+				and sampleName like concat("%",#{sampleName},"%")
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				and rotationTime  >= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				and rotationTime &lt;= #{endTime}
+			</if>
+		</where>
+		order by rotationId
+	</select>
+		<!-- 查询前2个轮播图信息(pc倒序) -->
+	<select id="getFourRotation" resultMap="resultMap">
+		SELECT t1.*,t2.sampleName FROM rotation t1 INNER JOIN
+		sample t2 ON (t1.sampleId=t2.sampleId)
+		ORDER BY ranking  DESC LIMIT 4 	
+	</select>
+	<!-- 插入轮播图 -->
+	<insert id="insertRotation" >
+		insert into rotation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="rotationId != null">
+				rotationId,
+			</if>
+			<if test="rotationName != null">
+				rotationName,
+			</if>
+			<if test="rotationImage != null">
+				rotationImage,
+			</if>
+			<if test="sampleId != null">
+				sampleId,
+			</if>
+			<if test="ranking != null">
+				ranking,
+			</if>
+			<if test="rotationTime != null">
+				rotationTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="rotationId != null">
+				#{rotationId},
+			</if>
+			<if test="rotationName != null">
+				#{rotationName},
+			</if>
+			<if test="rotationImage != null">
+				#{rotationImage},
+			</if>
+			<if test="sampleId != null">
+				#{sampleId},
+			</if>
+			<if test="ranking != null">
+				#{ranking},
+			</if>
+			<if test="rotationTime != null">
+				#{rotationTime},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 修改轮播图 -->
+	<update id="updataRotationByRotationId">
+		update rotation
+	<set>
+		<if test="rotationName != null">
+			rotationName = #{rotationName},
+		</if>
+		<if test="rotationImage != null">
+			rotationImage = #{rotationImage},
+		</if>
+		<if test="sampleId != null">
+			sampleId = #{sampleId},
+		</if>
+		<if test="ranking != null">
+			ranking = #{ranking},
+		</if>
+		<if test="rotationTime != null">
+			rotationTime = #{rotationTime},
+		</if>
+		
+	</set>
+	where rotationId = #{rotationId}
+	</update>
+	
+	
+	<!-- 删除轮播图 -->
+	<delete id="deleteRotationByRotationId">
+		delete from rotation where rotationId  = #{rotationId}
+	</delete>
+	
+	<!-- 批量删除轮播图 -->
+	<delete id="deleteRotationByArray">
+		delete from rotation where rotationId in
+		<foreach collection="list" item="rotationId" open="(" separator="," close=")">
+			#{rotationId}
+		</foreach>
+	</delete>
+
+	<!-- 根据样片Id查询评论表 -->
+	<select id="getRotationBySampleId" resultType="Rotation">
+		select * from rotation where sampleId = #{sampleId}
+	</select>
+	
+	<!-- 根据轮播图id查询轮播图信息 -->
+	<select id="getRotationId" resultMap="resultMap">
+		select * from rotation where rotationId = #{rotationId}
+	</select>
+	
+</mapper>

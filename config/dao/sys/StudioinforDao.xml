@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruanyuan.sys.dao.StudioinforDao">
+	<resultMap type="Studioinfor" id="resultMap">
+		<id column="studId" property="studId" />
+		<result column="studName" property="studName"></result>
+		<result column="studIntroduction" property="studIntroduction" />
+		<result column="members" property="members" />
+		<result column="aboutUs" property="aboutUs" />		
+	</resultMap>
+
+	<!-- 查询工作室信息 -->
+	<select id="getAllStudioinfor" resultMap="resultMap">
+		select * from studioinfor
+	</select>
+	<!-- 修改工作室信息 -->
+	<update id="updateStudioinfor">
+		update studioinfor
+		<set>
+			<if test="studName != null">
+				studName = #{studName},
+			</if>
+			<if test="studIntroduction != null">
+				studIntroduction = #{studIntroduction},
+			</if>
+			<if test="members != null">
+				members = #{members},
+			</if>
+			<if test="aboutUs != null">
+				aboutUs = #{aboutUs},
+			</if>
+		</set>
+		where studId = #{studId}
+	</update>
+	
+	<!-- 根据工作室编号查询工作室信息 -->
+	<select id="getAllStudioinforById" resultMap="resultMap">
+		select * from studioinfor where studId = #{studId}
+	</select>
+</mapper>

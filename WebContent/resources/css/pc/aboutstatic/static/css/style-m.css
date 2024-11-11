@@ -1,0 +1,244 @@
+@media (max-width: 768px) {
+  /* 1.头部变化 */
+  .header {
+    display: none;
+  }
+  .header-m {
+    display: block;
+    width: 100%;
+    height: 80px;
+  }
+  .header-m.active {
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+  }
+  .header-m .header-c {
+    transition: all 0.5s ease-in;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: auto;
+    padding-left: 0;
+    display: flex;
+  }
+  .header-m .header-c .logo {
+    width: 89px;
+    margin-left: 15px;
+  }
+  .header-m .header-c .logo .logo1 {
+    width: 89px;
+    display: block;
+  }
+  .header-m .header-c .logo .logo2 {
+    width: 24px;
+    padding: 4px 0 0 32px;
+    display: block;
+  }
+  /* 工具栏 */
+  .header-m .header-c .btn {
+    display: block;
+    font-family: "iconfont";
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    font-size: 30px;
+    text-align: center;
+    line-height: 40px;
+  }
+
+  .header-m .header-c .icon-caidan {
+    transition: all 0.4s linear;
+  }
+  .header-m .header-c .icon-close {
+    transform: rotate(-90deg);
+    transition: all 0.4s linear;
+  }
+  /* 导航栏 */
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  .content {
+    width: 100%;
+    height: 100%;
+  }
+  .header-m .header-c .nav .nav-item {
+    margin-left: 0px;
+    /* padding: 25px 0; */
+  }
+  .header-m .header-c .nav a:after {
+    width: 0;
+    height: 0px;
+    /* background-color: #b9ab77; */
+  }
+  .header-c .nav a {
+    color: #1d1d1d;
+    line-height: 0px;
+  }
+  .header-m .header-c .nav .nav-item {
+    padding: 25px;
+  }
+  .header-m .header-c .nav .nav-item:first-child {
+    padding-top: 65px;
+  }
+  .header-c .nav .active a {
+    transform: scale(1);
+    color: #b9ab77;
+  }
+  .header-c .nav .nav-item:hover a {
+    transform: scale(1);
+    color: #1d1d1d;
+  }
+  .header-m .header-c .nav {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 40px;
+    width: 100%;
+    height: calc(100% - 40px);
+    z-index: 20;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  .header-m .header-c .nav.active {
+    display: block;
+  }
+  .containner.active {
+    filter: blur(9px);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+  /* 头部导航栏 */
+  /* 2.banner */
+  .banner .swiper-wrapper .swiper-slide {
+    height: 56px;
+  }
+  .banner .swiper-wrapper .swiper-slide img {
+    width: 100%;
+  }
+  /* 3.storen */
+  .store {
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  .title {
+    margin: 60px auto 35px;
+    font-size: 26px;
+    color: #444444;
+    text-align: center;
+  }
+  .title h3 {
+    font-size: 20px;
+  }
+  .title .eng {
+    font-size: 13px;
+  }
+  .store .content-c {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .store .content-c .top img {
+    margin-right: 0px;
+    height: 272px;
+  }
+  .store .content-c .top .mask {
+    width: 160px;
+    height: 44px;
+    text-align: left;
+    line-height: 44px;
+    font-size: 30px;
+  }
+  .store .content-c .top {
+    display: block;
+    position: relative;
+  }
+  .store .content-c .top p {
+    margin-top: 10px;
+    text-indent: 2em;
+    width: 100%;
+    color: #6b6b6b;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .store .content-c > p {
+    text-indent: 2em;
+    color: #6b6b6b;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 10px;
+  }
+  /* 4.link  */
+  .link {
+    padding: 0 5px;
+  }
+  .link-c {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .link-c img {
+    display: block;
+    width: 100%;
+  }
+  .link-c > h3 {
+    font-size: 20px;
+    line-height: 2;
+    padding: 0;
+  }
+  .link-c > p {
+    margin-top: 10px;
+    text-indent: 2em;
+  }
+  /* 地图 */
+  .link-c .map .text {
+   
+   margin-bottom: 20px;
+}
+  .link-c .map {
+    margin: 30px 0 10px;
+    display: block;
+  }
+  .link-c #container {
+    width: 100%;
+    height: 182px;
+    margin-right:0px;
+}
+.link-c .map .text p {
+    margin-top: 10px;
+    line-height: 23.2px;
+}
+/* 4.底部 */
+.footer{
+    height: 100px;
+    margin-top: 60px;
+  }
+  .footer-c {
+    width:100%;
+    margin: 0 auto;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .footer-c .left {
+    height: 100%;
+    margin-top: 20px;
+  }
+  .footer-c .left p {
+      margin-top: 20px;
+    line-height: 24px;
+    margin: 0;
+  }
+  .footer-c .right p, .footer-c {
+    line-height: 24px;
+  }
+  .footer-c .right p, .footer-c .right a {
+    margin-right: 0px;
+    margin-left: 10px;
+    line-height: 24px;
+  }
+    /* 最外面 */
+  
+}

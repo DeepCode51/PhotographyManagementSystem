@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.sam.dao.SampleDao">
+	
+	<!-- 映射 -->
+	<resultMap type="Sample" id="AllSample">
+	<id property="sampleId" column="sampleId"/>
+	<result property="sampleName" column="sampleName"/>	
+	<result property="typeId" column="typeId"/>	
+	<result property="userId" column="userId"/>	
+	<result property="sampleStock" column="sampleStock"/>	
+	<result property="sampleLogo" column="sampleLogo"/>	
+	<result property="sampleTime" column="sampleTime"/>	
+	<result property="sampleImage" column="sampleImage"/>	
+	<result property="samplePrice" column="samplePrice"/>	
+	<result property="collectionCount" column="collectionCount"/>	
+	<result property="orderCount" column="orderCount"/>	
+	<result property="subscribeCount" column="subscribeCount"/>	
+	<!-- 一对一 -->
+	<association property="type" javaType="Type">
+		<id property="typeId" column="typeId"/>
+		<result property="typeName" column="typeName"/>
+		<result property="remark" column="remark"/>
+	</association>
+	<!-- 一对一 -->
+	<association property="user" javaType="User">
+		<id property="userId" column="userId"/>
+		<result property="loginName" column="loginName"/>
+		<result property="realName" column="realName"/>
+		<result property="password" column="password"/>
+		<result property="sex" column="sex"/>
+		<result property="address" column="address"/>
+		<result property="userImage" column="userImage"/>
+		<result property="isApproval" column="isApproval"/>
+		<result property="member" column="member"/>
+		<result property="phone" column="phone"/>
+		<result property="job" column="job"/>
+	</association>
+</resultMap>
+	<!-- 查询样片-->
+	<select id="getAllSample" resultMap="AllSample">
+		SELECT t1.*,t2.*,t3.* FROM 
+		sample t1 INNER JOIN TYPE t2 INNER JOIN USER t3 
+		ON (t1.typeId=t2.typeId AND t1.userId=t3.userId)
+	<where>
+		<if test="sampleName!=null and sampleName !=''">
+			and sampleName like concat("%",#{sampleName},"%")
+		</if>
+		<if test="typeName!=null and typeName !=''">
+			and typeName like concat("%",#{typeName},"%")
+		</if>
+		<if test="starttime!=null and starttime !=''">
+			and sampleTime  >= #{starttime}
+		</if>
+		<if test="endtime!=null and endtime !=''">
+			and sampleTime <![CDATA[<=]]> #{endtime}
+		</if>
+		<if test="sampleLogo!=null and sampleLogo !=''">
+			and sampleLogo = #{sampleLogo}
+		</if>
+		<if test="typeId !=null and typeId !=''">
+			and t1.typeId = #{typeId}
+		</if>
+	</where>
+	order by sampleId
+	</select>
+	<!-- 添加样片 -->
+	<insert id="insertSample" keyProperty="sampleId" parameterType="Sample" useGeneratedKeys="true">
+		insert into sample
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sampleName != null">
+				sampleName,
+			</if>
+			<if test="typeId != null">
+				typeId,
+			</if>
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="sampleStock != null">
+				sampleStock,
+			</if>
+			<if test="sampleLogo != null">
+				sampleLogo,
+			</if>
+			<if test="sampleTime != null">
+				sampleTime,
+			</if>
+			<if test="sampleImage != null">
+				sampleImage,
+			</if>
+			<if test="samplePrice != null">
+				samplePrice,
+			</if>
+			<if test="collectionCount != null">
+				collectionCount,
+			</if>
+			<if test="orderCount != null">
+				orderCount,
+			</if>
+			<if test="subscribeCount != null">
+				subscribeCount,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sampleName != null">
+				#{sampleName},
+			</if>
+			<if test="typeId != null">
+				#{typeId},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="sampleStock != null">
+				#{sampleStock},
+			</if>
+			<if test="sampleLogo != null">
+				#{sampleLogo},
+			</if>
+			<if test="sampleTime != null">
+				#{sampleTime},
+			</if>
+			<if test="sampleImage != null">
+				#{sampleImage},
+			</if>
+			<if test="samplePrice != null">
+				#{samplePrice},
+			</if>
+			<if test="collectionCount != null">
+				#{collectionCount},
+			</if>
+			<if test="orderCount != null">
+				#{orderCount},
+			</if>
+			<if test="subscribeCount != null">
+				#{subscribeCount},
+			</if>
+		</trim>
+	</insert>
+	<!-- 修改样片 -->
+	<update id="updateSampleBySampleId">
+		update sample
+	<set>
+		<if test="sampleName != null">
+			sampleName = #{sampleName},
+		</if>
+		<if test="typeId != null">
+			typeId = #{typeId},
+		</if>
+		<if test="userId != null">
+			userId = #{userId},
+		</if>
+		<if test="sampleStock != null">
+			sampleStock = #{sampleStock},
+		</if>
+		<if test="sampleLogo != null">
+			sampleLogo = #{sampleLogo},
+		</if>
+		<if test="sampleTime != null">
+			sampleTime = #{sampleTime},
+		</if>
+		<if test="sampleImage != null">
+			sampleImage = #{sampleImage},
+		</if>
+		<if test="samplePrice != null">
+			samplePrice = #{samplePrice},
+		</if>
+		<if test="collectionCount != null">
+			collectionCount = #{collectionCount},
+		</if>
+		<if test="orderCount != null">
+			orderCount = #{orderCount},
+		</if>
+		<if test="subscribeCount != null">
+			subscribeCount = #{subscribeCount},
+		</if>
+	</set>
+	where sampleId = #{sampleId}
+	</update>
+	
+	<!-- 删除样片 -->
+	<delete id="deleteSampleBySampleId">
+		delete from sample where sampleId  = #{sampleId}
+	</delete>
+	
+	<!-- 根据样片Id在线预约量加一 -->
+	<update id="updateSampleBySubscribeCountAddOne">
+		update sample set subscribeCount=subscribeCount+1 where sampleId = #{sampleId}
+	</update>
+	<!-- 根据样片Id在线预约量减一 -->
+	<update id="updateSampleBySubscribeCountReduceOne">
+		update sample set subscribeCount=subscribeCount-1 where sampleId = #{sampleId}
+	</update>
+	
+	<!-- 根据样片Id在线收藏量加一 -->
+	<update id="updateSampleByCollectionCountAddOne">
+		update sample set collectionCount=collectionCount+1 where sampleId = #{sampleId}
+	</update>
+	<!-- 根据样片Id在线收藏量减一 -->
+	<update id="updateSampleByCollectionCountReduceOne">
+		update sample set collectionCount=collectionCount-1 where sampleId = #{sampleId}
+	</update>
+	<!-- 根据样片Id在线订单量加一 -->
+	<update id="updateSampleByOrderCountAddOne">
+		update sample set orderCount=orderCount+1 where sampleId = #{sampleId}
+	</update>
+	<!-- 根据样片Id在线订单量减一 -->
+	<update id="updateSampleByOrderCountReduceOne">
+		update sample set orderCount=orderCount-1 where sampleId = #{sampleId}
+	</update>
+	<!-- 根据用户Id查询样片信息 -->
+	<select id="getSampleUserId" resultMap="AllSample">
+		select * from sample where userId=#{userId}
+	</select>
+	<!-- 根据类别Id查询样片信息 -->
+	<select id="getSampleTypeId" resultMap="AllSample">
+		select * from sample where typeId=#{typeId}
+	</select>
+	<!-- 根据样片id查询样片信息 -->
+	<select id="getSampleId" resultMap="AllSample">
+		SELECT t1.*,t2.*,t3.* FROM 
+		sample t1 INNER JOIN TYPE t2 INNER JOIN USER t3 
+		ON (t1.typeId=t2.typeId AND t1.userId=t3.userId)
+		 where sampleId=#{sampleId}
+	</select>
+	
+	<!-- 根据样片名称查询 -->
+	<select id="getSampleBySampleName" resultType="Sample">
+		select * from sample where sampleName = #{sampleName}
+	</select>
+	
+</mapper>

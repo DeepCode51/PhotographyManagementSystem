@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.bus.dao.SubscribeDao">
+<resultMap type="Subscribe" id="AllSubscribe">
+	<id property="subId" column="subId"/>
+	<result property="customerId" column="customerId"/>	
+	<result property="sampleId" column="sampleId"/>	
+	<result property="price" column="price"/>	
+	<result property="subState" column="subState"/>	
+	<result property="subeTime" column="subeTime"/>	
+	<!-- 一对一映射 -->
+	<association property="customer" javaType="Customer">
+		<id property="customerId" column="customerId"/>
+		<result property="loginName" column="loginName"/>
+		<result property="realName" column="realName"/>
+		<result property="PASSWORD" column="PASSWORD"/>
+		<result property="sex" column="sex"/>
+		<result property="address" column="address"/>
+		<result property="phone" column="phone"/>
+		<result property="balance" column="balance"/>
+	</association>
+	<!-- 一对一 -->
+	<association property="sample" javaType="Sample">
+		<id property="sampleId" column="sampleId"/>
+		<result property="sampleName" column="sampleName"/>
+		<result property="typeId" column="typeId"/>
+		<result property="userId" column="userId"/>
+		<result property="sampleStock" column="sampleStock"/>
+		<result property="sampleLogo" column="sampleLogo"/>
+		<result property="sampleTime" column="sampleTime"/>
+		<result property="sampleImage" column="sampleImage"/>
+		<result property="samplePrice" column="samplePrice"/>
+		<result property="collectionCount" column="collectionCount"/>
+		<result property="orderCount" column="orderCount"/>
+		<result property="subscribeCount" column="subscribeCount"/>
+	</association>
+
+</resultMap>
+	<!-- 查询所有的预约信息-->
+	<select id="getAllSubscribe" resultMap="AllSubscribe" >
+	select t1.*,t2.realName,t2.phone,t3.sampleName,t3.sampleId from Subscribe t1 inner join 
+	customer t2 inner join sample t3  on 
+	(t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+	 <where>
+		<if test="subState != null and subState != ''">
+			and subState = #{subState}
+		</if>
+		<if test="starttime != null and starttime != ''">
+			and subeTime  >= #{starttime}
+		</if>
+		<if test="endtime!=null and endtime !=''">
+			and subeTime <![CDATA[<=]]> #{endtime}
+		</if>
+		<if test="realName != null and realName !=''">
+			and realName like concat("%",#{realName},"%")
+		</if>
+		<if test="sampleName != null and sampleName !=''">
+			and sampleName like concat("%",#{sampleName},"%")
+		</if>
+		<if test="phone != null and phone !=''">
+			and phone like concat("%",#{phone},"%")
+		</if>
+	</where>
+	order by subId
+	</select>
+	<!--判断过期时间 -->
+	<select id="getSubscribeBySysTimeAndSubId" resultMap="AllSubscribe" >
+	select * from subscribe where  subeTime <![CDATA[<=]]> #{subeTime} and subId = #{subId}
+	</select>
+	<!-- 添加预约信息 -->
+	<insert id="addSubscribe" >
+	insert into subscribe
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="subId != null">
+				subId,
+			</if>
+			<if test="customerId != null">
+				customerId,
+			</if>
+			<if test="sampleId != null">
+				sampleId,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="subState != null">
+				subState,
+			</if>
+			<if test="subeTime != null">
+				subeTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="subId != null">
+				#{subId},
+			</if>
+			<if test="customerId != null">
+				#{customerId},
+			</if>
+			<if test="sampleId != null">
+				#{sampleId},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="subState != null">
+				#{subState},
+			</if>
+			<if test="subeTime != null">
+				#{subeTime},
+			</if>
+		</trim>
+	</insert>
+	<!-- 修改预约信息 -->
+	<update id="updateSubscribe">
+	update subscribe
+	<set>
+		<if test="customerId != null">
+			customerId = #{customerId},
+		</if>
+		<if test="sampleId != null">
+			sampleId = #{sampleId},
+		</if>
+		<if test="price != null">
+			price = #{price},
+		</if>
+		<if test="subState != null">
+			subState = #{subState},
+		</if>
+		<if test="subeTime != null">
+			subeTime = #{subeTime},
+		</if>
+	</set>
+	where subId = #{subId}
+	</update>
+	
+	<!-- 根据预约Id查询预约信息 -->
+	<select id="getSubscribeBySubId" resultMap="AllSubscribe">
+	select t1.*,t2.realName,t2.phone,t3.sampleName,t3.sampleId from Subscribe t1 inner join 
+	customer t2 inner join sample t3  on 
+	(t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+		where subId = #{subId} 
+	</select>
+	
+	<!-- 根据样片Id查询预约信息 -->
+	<select id="getSubscribeBySampleId" resultMap="AllSubscribe">
+	select t1.*,t2.realName,t3.sampleName from Subscribe t1 inner join 
+	customer t2 inner join sample t3  on 
+	(t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+		where t1.sampleId = #{sampleId} 
+	</select>
+		<!-- 根据样片Id查询预约信息 -->
+	<select id="getSubscribeBySampleId1" resultMap="AllSubscribe">
+	select t1.*,t2.realName,t3.sampleName from Subscribe t1 inner join 
+	customer t2 inner join sample t3  on 
+	(t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+		where t1.sampleId = #{sampleId} 
+	</select>
+	
+	<!-- 根据客户id和样片Id查询预约样片信息 -->
+	<select id="getSubscribeByCustomerIdAndSampleId" resultMap="AllSubscribe">
+		select * from subscribe where customerId=#{customerId} and sampleId=#{sampleId}
+	</select>
+	
+	<!-- 根据客户Id查询预约信息 -->
+	<select id="getSubscribeByCustomerId" resultMap="AllSubscribe">
+	select t1.*,t2.realName,t3.* from Subscribe t1 inner join 
+	customer t2 inner join sample t3  on 
+	(t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+		where t1.customerId = #{customerId} 
+	</select>
+	<!-- 根据预约Id删除预约信息 -->
+	<delete id="deleteSubscribeBySubId" >
+		delete from Subscribe where subId = #{subId}
+	</delete>
+	
+	<!-- 批量删除预约信息 -->
+	<delete id="deleteSubscribeByArray">
+		delete from Subscribe where subId in 
+		<foreach collection="list" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	
+	<!-- 根据客户id查询预约信息 -->
+	<select id="getSubscribeCustomerId" resultMap="AllSubscribe">
+		select * from subscribe where customerId=#{customerId}
+	</select>
+	
+</mapper>

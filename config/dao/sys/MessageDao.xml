@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruanyuan.sys.dao.MessageDao">
+<resultMap type="message" id="getMessage">
+	<id column="messageId" property="messageId"/>
+	<result column="messageContent" property="messageContent"></result>
+	<result column="messageTime" property="messageTime"/>
+	<result column="customerId" property="customerId"/>
+	<association property="customer" javaType="customer">
+		<id column="customerId" property="customerId" />
+		<result column="loginName" property="loginName"/>
+		<result column="realName" property="realName"/>
+		<result column="password" property="password"/>
+		<result column="sex" property="sex"/>
+		<result column="address" property="address"/>
+		<result column="phone" property="phone"/>
+		<result column="balance" property="balance"/>
+	</association>
+</resultMap>
+<!-- 查询所有留言 -->
+<select id="getAllMessage" resultMap="getMessage" >
+	select t1.*,t2.* from message t1 inner join
+	customer t2 on(t1.customerId=t2.customerId) 
+	<where>
+		<if test="realName!=null and realName !=''">
+			and realName like concat("%",#{realName},"%")
+		</if>
+		<if test="messageContent!=null and messageContent !=''">
+			and messageContent like concat("%",#{messageContent},"%")
+		</if>
+		<if test="starttime != null and starttime != ''">
+			and messageTime  >= #{starttime}
+		</if>
+		<if test="endtime!=null and endtime !=''">
+			and messageTime <![CDATA[<=]]> #{endtime}
+		</if>
+		
+	</where>
+	order by t1.messageTime DESC
+</select>
+<!-- 查询最新前10条留言 -->
+<select id="getPcMessage" resultMap="getMessage" >
+	SELECT t1.*,t2.* FROM message t1 INNER JOIN customer t2 ON(t1.customerId=t2.customerId)
+		ORDER BY messageTime  DESC LIMIT 10 
+</select>
+<!-- 添加留言信息 -->
+<insert id="addMessage">
+	insert into message 
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="messageId != null">
+			messageId,
+		</if>
+		<if test="customerId != null">
+			customerId,
+		</if>
+		<if test="messageContent != null">
+			messageContent,
+		</if>
+		<if test="messageTime != null">
+			messageTime,
+		</if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="messageId != null">
+			#{messageId},
+		</if>
+		<if test="customerId != null">
+			#{customerId},
+		</if>
+		<if test="messageContent != null">
+			#{messageContent},
+		</if>
+		<if test="messageTime != null">
+			#{messageTime},
+		</if>
+	</trim>
+</insert>
+<!-- 修改留言信息 -->
+<update id="updateMessage">
+	update message
+	<set>
+		<if test="messageId != null">
+		messageId = #{messageId},
+		</if>
+		<if test="customerId != null">
+			customerId = #{customerId},
+		</if>
+		<if test="messageContent != null">
+			messageContent = #{messageContent},
+		</if>
+		<if test="messageTime != null">
+			messageTime = #{messageTime},
+		</if>
+	</set>
+	where messageId=#{messageId}
+</update>
+
+<!-- 根据留言编号查询留言信息 -->
+<select id="getMessageById" resultMap="getMessage">
+	select t1.*,t2.* from message t1 inner join
+	 customer t2 on(t1.customerId=t2.customerId) 
+	 where t1.messageId = #{messageId}
+</select>
+
+<!-- 根据留言编号删除信息 -->
+<delete id="deleteMessageById">
+	delete from message where messageId = #{messageId}
+</delete>
+
+<!-- 批量删除留言信息 -->
+<delete id="deleteMessageByArray">
+	delete from message where messageId in
+	<foreach collection="list" item="ids" open="(" separator="," close=")">
+		#{ids}
+	</foreach>
+</delete>
+
+<!-- 根据客户id查询留言信息 -->
+<select id="getMessageCustomerId" resultMap="getMessage">
+	select * from message where customerId=#{customerId}
+</select>
+</mapper>

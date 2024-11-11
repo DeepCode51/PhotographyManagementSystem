@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.stat.dao.StatisticsDao">
+	<!-- 统计每年每月的订单量 -->
+	<select id="loadOrdersYearGradeStat" resultType="Integer">
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'01')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'02')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'03')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'04')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'05')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'06')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'07')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'08')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'09')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'10')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'11')
+		UNION all
+		select sum(t2.price) from orders t1 inner join subscribe t2 on (t1.subId=t2.subId)where
+		DATE_FORMAT(orderTime,"%Y%m")=concat(#{value},'12')
+	</select>
+</mapper>

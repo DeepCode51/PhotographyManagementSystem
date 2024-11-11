@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.sys.dao.UserDao">
+	<!-- 根据用户名密码 查询用户信息 -->
+	<select id="getUserByLoginNameAndPassword" resultType="User" >
+		select * from user where loginName = #{loginName} and password = #{password}
+	</select>
+
+	<!-- 查询所有用户 -->
+	<select id="getUserAll" resultType="user">
+		select * from user 
+		<where>
+			<if test="loginName!=null and loginName!=''">
+				and loginName like concat("%",#{loginName},"%")
+			</if>
+			<if test="realName!=null and realName!=''">
+				and realName like concat("%",#{realName},"%")
+			</if>
+			<if test="password!=null and password!=''">
+				and password = #{password}
+			</if>
+			<if test="sex!=null and sex!=''">
+				and sex = #{sex}
+			</if>
+			<if test="address!=null and address!=''">
+				and address like concat("%",#{address},"%")
+			</if>
+			<if test="userImage!=null and userImage!=''">
+				and userImage = #{userImage}
+			</if>
+			<if test="isApproval!=null and isApproval!=''">
+				and isApproval = #{isApproval}
+			</if>
+			<if test="member!=null and member!=''">
+				and member = #{member}
+			</if>
+			<if test="phone!=null and phone!=''">
+				and phone like concat("%",#{phone},"%")
+			</if>
+			<if test="job!=null and job!=''">
+				and job like concat("%",#{job},"%")
+			</if>
+		</where>
+	</select>
+	
+	<!-- 添加用户 -->
+	<insert id="addUser" parameterType="user">
+			insert into user
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId!=null">
+				userId,
+			</if>
+			<if test="loginName!=null and loginName!=''">
+				loginName,
+			</if>
+			<if test="realName!=null and realName!=''">
+				realName,
+			</if>
+			<if test="password!=null and password!=''">
+				password,
+			</if>
+			<if test="sex!=null">
+				sex,
+			</if>
+			<if test="address!=null and address!=''">
+				address,
+			</if>
+			<if test="userImage!=null and userImage!=''">
+				userImage,
+			</if>
+			<if test="isApproval!=null and isApproval!=''">
+				isApproval,
+			</if>
+			<if test="member!=null">
+				member,
+			</if>
+			<if test="phone!=null and phone!=''">
+				phone,
+			</if>
+			<if test="job!=null and job!=''">
+				job
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId!=null">
+				#{userId},
+			</if>
+			<if test="loginName!=null and loginName!=''">
+				#{loginName},
+			</if>
+			<if test="realName!=null and realName!=''">
+				#{realName},
+			</if>
+			<if test="password!=null and password!=''">
+				#{password},
+			</if>
+			<if test="sex!=null">
+				#{sex},
+			</if>
+			<if test="address!=null and address!=''">
+				#{address},
+			</if>
+			<if test="userImage!=null and userImage!=''">
+				#{userImage},
+			</if>
+			<if test="isApproval!=null and isApproval!=''">
+				#{isApproval},
+			</if>
+			<if test="member!=null">
+				#{member},
+			</if>
+			<if test="phone!=null and phone!=''">
+				#{phone},
+			</if>
+			<if test="job!=null and job!=''">
+				#{job}
+			</if>
+			</trim>
+	</insert>
+	
+	<!-- 修改用户 -->
+	<update id="updateUser" parameterType="user">
+			update user 
+			<set>
+				<if test="loginName!=null and loginName!=''">
+					loginName = #{loginName},
+				</if>
+				<if test="realName!=null and realName!=''">
+					realName = #{realName},
+				</if>
+				<if test="password!=null and password!=''">
+					password = #{password},
+				</if>
+				<if test="sex!=null">
+					sex = #{sex},
+				</if>
+				<if test="address!=null and address!=''">
+					address = #{address},
+				</if>
+				<if test="userImage!=null and userImage!=''">
+					userImage = #{userImage},
+				</if>
+				<if test="isApproval!=null and isApproval!=''">
+					isApproval = #{isApproval},
+				</if>
+				<if test="member!=null">
+					member = #{member},
+				</if>
+				<if test="phone!=null and phone!=''">
+					phone = #{phone},
+				</if>
+				<if test="job!=null and job!=''">
+					job = #{job},
+				</if>
+			</set>
+			where userId = #{userId}
+	</update>
+	
+	<!-- 删除用户 -->
+	<delete id="deleteUser" parameterType="Integer">
+		delete from user where userId=#{userId}
+	</delete>
+	
+	<!-- 批量删除用户信息 -->
+	<delete id="deleteUserByArray">
+		delete from user where userId in
+		<foreach collection="list" item="userId" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+	
+	<!-- 重置密码 -->
+	<update id="updateUserPwd" parameterType="Integer">
+		update user set password = 'e10adc3949ba59abbe56e057f20f883e' where userId=#{userId}
+	</update>
+	
+	<!-- 根据id查询用户信息 -->
+	<select id="getUserId" resultType="user">
+		select * from user where userId = #{userId}
+	</select>
+	
+	<!-- 账号查重 -->
+	<select id="getUserLoginName" resultType="user">
+		select * from user where loginName = #{loginName}
+	</select>
+
+	<!-- 根据用户编号查询用户信息 -->
+	<select id="getUserByUserId" resultType="user">
+		select * from user where userId=#{userId}
+	</select>
+	
+	<!-- 查询所有职位 -->
+	<select id="getUserByJob" resultType="String">
+		select distinct job from user 
+	</select>
+</mapper>

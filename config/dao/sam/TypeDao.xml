@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.sam.dao.TypeDao">
+	<!--映射  -->
+	<resultMap type="Type" id="AllType">
+		<id column="typeId" property="typeId"/>
+		<result column="typeName" property="typeName"/>
+		<result column="remark" property="remark"/>
+	</resultMap>
+	<!-- 查询 类别信息 -->
+	<select id="getAllType" resultMap="AllType">
+		SELECT * FROM TYPE
+		 	<where>
+			<if test="typeName !=null and typeName !=''">
+				and typeName like concat("%",#{typeName},"%")
+			</if>
+			<if test="remark !=null and remark !=''">
+				and remark like concat("%",#{remark},"%")
+			</if>
+			</where>
+		 
+	</select>
+	
+	<!-- 根据类别编号查询类别信息 -->
+	<select id="getTypeByTypeId" resultMap="AllType">
+		SELECT * FROM TYPE where typeId=#{typeId}
+	</select>
+	
+	<!-- 添加 类别信息 -->
+	<insert id="addType" parameterType="type">
+		INSERT INTO TYPE(typeName,remark) VALUE(#{typeName},#{remark})
+	</insert>
+	<!-- 修改 类别信息 -->
+	<update id="updateType" parameterType="type">
+		UPDATE TYPE
+			<set>
+				<if test="typeName != null and typeName !=''">
+					typeName=#{typeName},
+				</if>
+				<if test="remark !=null and remark !=''">
+					remark=#{remark}
+				</if>
+			</set> 
+		WHERE typeId=#{typeId}
+	</update>
+	<!-- 删除 类别信息 -->
+	<delete id="deleteType" parameterType="Integer">
+		DELETE  FROM TYPE WHERE typeId=#{typeId}
+	</delete>
+</mapper>

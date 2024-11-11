@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruanyuan.bas.dao.CommentDao">
+<resultMap type="Comment" id="AllComment">
+	<id property="commId" column="commId"/>
+	<result property="customerId" column="customerId"/>	
+	<result property="sampleId" column="sampleId"/>	
+	<result property="commContent" column="commContent"/>	
+	<result property="commTime" column="commTime"/>	
+	<!-- 一对一映射 -->
+	<association property="customer" javaType="Customer">
+		<id property="customerId" column="customerId"/>
+		<result property="loginName" column="loginName"/>
+		<result property="realName" column="realName"/>
+		<result property="PASSWORD" column="PASSWORD"/>
+		<result property="sex" column="sex"/>
+		<result property="address" column="address"/>
+		<result property="phone" column="phone"/>
+		<result property="balance" column="balance"/>
+	</association>
+	<association property="sample" javaType="Sample">
+		<id property="sampleId" column="sampleId"/>
+		<result property="sampleName" column="sampleName"/>
+		<result property="typeId" column="typeId"/>
+		<result property="userId" column="userId"/>
+		<result property="sampleStock" column="sampleStock"/>
+		<result property="sampleLogo" column="sampleLogo"/>
+		<result property="sampleTime" column="sampleTime"/>
+		<result property="sampleImage" column="sampleImage"/>
+		<result property="samplePrice" column="samplePrice"/>
+		<result property="collectionCount" column="collectionCount"/>
+		<result property="orderCount" column="orderCount"/>
+		<result property="subscribeCount" column="subscribeCount"/>
+	</association>
+</resultMap>
+	<!-- 查询所有的评论信息-->
+	<select id="getAllComment" resultMap="AllComment" >
+	select t1.*,t2.realName,t3.* from comment t1 inner join 
+	customer t2 inner join sample t3 on (t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+	 <where>
+		<if test="commContent != null and commContent != ''">
+			and commContent like concat("%",#{commContent},"%")
+		</if>
+		<if test="starttime != null and starttime != ''">
+			and commTime  >= #{starttime}
+		</if>
+		<if test="endtime!=null and endtime !=''">
+			and commTime <![CDATA[<=]]> #{endtime}
+		</if>
+		<if test="realName != null and realName !=''">
+			and realName like concat("%",#{realName},"%")
+		</if>
+		<if test="sampleName != null and sampleName !=''">
+			and sampleName like concat("%",#{sampleName},"%")
+		</if>
+	</where>
+		order by t1.commId
+	</select>
+	
+	<!-- 添加评论信息 -->
+	<insert id="addComment" >
+	insert into comment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="commId != null">
+				commId,
+			</if>
+			<if test="customerId != null">
+				customerId,
+			</if>
+			<if test="sampleId != null">
+				sampleId,
+			</if>
+			<if test="commContent != null">
+				commContent,
+			</if>
+			<if test="commTime != null">
+				commTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="commId != null">
+				#{commId},
+			</if>
+			<if test="customerId != null">
+				#{customerId},
+			</if>
+			<if test="sampleId != null">
+				#{sampleId},
+			</if>
+			<if test="commContent != null">
+				#{commContent},
+			</if>
+			<if test="commTime != null">
+				#{commTime},
+			</if>
+		</trim>
+	</insert>
+	<!-- 修改评论信息 -->
+	<update id="updateComment">
+	update comment
+	<set>
+		<if test="customerId != null">
+			customerId = #{customerId},
+		</if>
+		<if test="sampleId != null">
+			sampleId = #{sampleId},
+		</if>
+		<if test="commContent != null">
+			commContent = #{commContent},
+		</if>
+		<if test="commTime != null">
+			commTime = #{commTime},
+		</if>
+	</set>
+	where commId = #{commId}
+	</update>
+	
+	<!-- 根据评论Id查询评论信息 -->
+	<select id="getCommentByCommId" resultMap="AllComment">
+	select t1.*,t2.realName,t3.sampleName from comment t1 inner join 
+	customer t2 inner join sample t3 on (t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+		where commId = #{commId} 
+	</select>
+	
+	<!-- 根据样片Id查询评论信息 -->
+	<select id="getCommentBySampleId" resultMap="AllComment">
+	select t1.*,t2.loginName,t3.sampleName from comment t1 inner join 
+	customer t2 inner join sample t3 on (t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+		where t1.sampleId = #{sampleId} 
+	</select>
+	<!-- 根据样片Id查询评论信息1 -->
+	<select id="getCommentBySampleId1" resultMap="AllComment">
+	select t1.*,t2.loginName,t3.sampleName from comment t1 inner join 
+	customer t2 inner join sample t3 on (t1.customerId=t2.customerId) AND (t1.sampleId=t3.sampleId) 
+		where t1.sampleId = #{sampleId} ORDER BY t1.commTime DESC
+	</select>
+	<!-- 根据评论Id删除评论信息 -->
+	<delete id="deleteCommentByCommId" >
+		delete from comment where commId = #{commId}
+	</delete>
+	
+	<!-- 批量删除评论信息 -->
+	<delete id="deleteCommentByArray">
+		delete from comment where commId in 
+		<foreach collection="list" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	
+	<!-- 根据客户id查询评论信息 -->
+	<select id="getCommentCustomerId" resultMap="AllComment">
+		select * from comment where customerId=#{customerId}
+	</select>
+	
+</mapper>
